@@ -18,18 +18,36 @@ to the one at Children's Lighthouse
 
 */
 
-typedef struct {
-    int x;
-    int y;
-    int dx;
-    int dy;
-} Movement;
 
-void eventHandler(int &done)
+class Player {
+    
+};
+
+class Movement {
+    private:
+        int x;
+        int y;
+        int dx;
+        int dy;
+    public:
+        inline int get_x() { return x; }
+        inline void set_x(int v) { x = v; }
+        inline int get_y() { return y; }
+        inline void set_y(int v) { y = v; }
+        inline int get_dx() { return dx; }
+        inline void set_dx(int v) { dx = v; }
+        inline int get_dy() { return dy; }
+        inline void set_dy(int v) { dy = v; }
+};
+
+class Game
 {
-
-}
-
+    private:
+        SDL_Renderer *renderer;
+    public:
+        inline void set_renderer(SDL_Renderer *r) { renderer = r; }
+        inline SDL_Renderer* get_renderer() { return renderer; }
+};
 
 int main(int argc, char **argv)
 {
@@ -56,8 +74,8 @@ int main(int argc, char **argv)
     int done = 0;
 
     Movement mov;
-    mov.x = 0;
-    mov.y = 0;
+    mov.set_x(0);
+    mov.set_y(0);
 
     SDL_Event event;
     while (!done)
@@ -90,25 +108,25 @@ int main(int argc, char **argv)
                             done = 1;
                         break;
                         case SDLK_UP: {
-                            mov.y += 1;
+                            mov.set_y(mov.get_y() - 1);
                         }
                         break;
                         case SDLK_DOWN: {
-                            mov.y -= 1;
+                            mov.set_y(mov.get_y() + 1);
                         }
                         break;
                         case SDLK_LEFT: {
-                            mov.x -= 1;
+                            mov.set_x(mov.get_x() - 1);
                         }
                         break;
                         case SDLK_RIGHT: {
-                            mov.x += 1;
+                            mov.set_y(mov.get_y() + 1);
                         }
                     }
                 }
             }
         }
-        std::cout << mov.x << " " << mov.y << std::endl;
+        std::cout << mov.get_x() << " " << mov.get_y() << std::endl;
     }
 
     SDL_DestroyWindow(window);

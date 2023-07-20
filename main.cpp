@@ -48,6 +48,8 @@ class Entity
 
         inline void setFrame(int f) { frame = f; }
         inline int getFrame() { return frame; }
+
+        SDL_Texture& operator[] (int idx);
 };
 
 Entity::Entity()
@@ -65,6 +67,11 @@ Entity::Entity(float x, float y, int size)
     sprites = std::vector<SDL_Texture*>(size);
     this->setFrame(0);
 };
+
+SDL_Texture& Entity::operator[] (int idx)
+{
+    return *sprites.at(idx);
+}
 
 
 

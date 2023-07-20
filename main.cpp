@@ -32,6 +32,7 @@ class Entity
       int frame;
       std::vector<SDL_Texture*> sprites;
     public:
+        Entity();
         Entity(float x, float y, int size);
         inline float get_x() { return x; }
         inline void set_x(float v) { x = v; }
@@ -48,6 +49,14 @@ class Entity
         inline void setFrame(int f) { frame = f; }
         inline int getFrame() { return frame; }
 };
+
+Entity::Entity()
+{
+    this->set_x(0);
+    this->set_y(0);
+    sprites = std::vector<SDL_Texture*>(1);
+    this->setFrame(0);    
+}
 
 Entity::Entity(float x, float y, int size)
 {

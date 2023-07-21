@@ -65,6 +65,16 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
             case SDL_QUIT:
                 done = 1;
             break;
+            case SDL_KEYDOWN:
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        done = 1;
+                    break;
+                }
+            }
+            break;
         }
     }
 }

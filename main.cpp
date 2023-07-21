@@ -32,7 +32,7 @@ class Game
         std::shared_ptr<Entity> player;
     public:
         Game();
-        void events();
+        void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
         inline std::shared_ptr<Entity> getPlayer() { return player; };
 
@@ -45,9 +45,28 @@ Game::Game()
     player = std::shared_ptr<Player>(); 
 }
 
-void Game::events()
-{
 
+void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
+{
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+            case SDL_WINDOWEVENT_CLOSE:
+            {
+                if (window)
+                {
+                    SDL_DestroyWindow(window);
+                    window = NULL;
+                    done = 1;
+                }
+            }
+            break;
+            case SDL_QUIT:
+                done = 1;
+            break;
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -76,60 +95,10 @@ int main(int argc, char **argv)
 
     int done = 0;
 
-    Player mov;
-
     SDL_Event event;
     while (!done)
     {
-
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-                case SDL_WINDOWEVENT_CLOSE:
-                {
-                    if (window)
-                    {
-                        SDL_DestroyWindow(window);
-                        window = NULL;
-                        done = 1;
-                    }
-                }
-                break;
-                case SDL_QUIT:
-                {
-                    done = 1;
-                }
-                break;
-                case SDL_KEYDOWN:
-                {
-                    switch (event.key.keysym.sym)
-                    {
-                        case SDLK_ESCAPE: {
-                            done = 1;
-                        }
-                        break;
-                        case SDLK_UP: {
-                            mov.set_y(mov.get_y() - 1);
-                        }
-                        break;
-                        case SDLK_DOWN: {
-                            mov.set_y(mov.get_y() + 1);
-                        }
-                        break;
-                        case SDLK_LEFT: {
-                            mov.set_x(mov.get_x() - 1);
-                        }
-                        break;
-                        case SDLK_RIGHT: {
-                            mov.set_x(mov.get_x() + 1);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        std::cout << mov.get_x() << " " << mov.get_y() << std::endl;
+        game.eventHandler(window, event, done);
     }
 
     SDL_DestroyWindow(window);

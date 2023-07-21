@@ -1,9 +1,7 @@
-#include <iostream>
-#include <vector>
-#include <SDL2\SDL.h>
-#include <SDL2\SDL_image.h>
-#include <SDL2\SDL_mixer.h>
-#include <SDL2\SDL_ttf.h>
+// John 3:16
+#include "utilities.cpp"
+#include "entity.hpp"
+#include "player.hpp"
 
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
@@ -20,58 +18,9 @@ to the one at Children's Lighthouse
 */
 
 
-/*
-A simple Entity Class
-*/
-class Entity 
-{
-    private:
-      /* data */
-      float x, y;
-      float dx, dy;
-      int frame;
-      std::vector<SDL_Texture*> sprites;
-    public:
-        Entity();
-        Entity(float x, float y, int size);
-        inline float get_x() { return x; }
-        inline void set_x(float v) { x = v; }
-        inline float get_y() { return y; }
-        inline void set_y(float v) { y = v; }
-        inline float get_dx() { return dx; }
-        inline void set_dx(float v) { dx = v; }
-        inline float get_dy() { return dy; }
-        inline void set_dy(float v) { dy = v; }
 
-        inline void setSprite(int idx, SDL_Texture* sprite) { sprites.at(idx) = sprite; }
-        inline SDL_Texture* getSprite(int idx) { return sprites.at(idx); }
 
-        inline void setFrame(int f) { frame = f; }
-        inline int getFrame() { return frame; }
 
-        SDL_Texture& operator[] (int idx);
-};
-
-Entity::Entity()
-{
-    this->set_x(0);
-    this->set_y(0);
-    sprites = std::vector<SDL_Texture*>(1);
-    this->setFrame(0);    
-}
-
-Entity::Entity(float x, float y, int size)
-{
-    this->set_x(x);
-    this->set_y(y);
-    sprites = std::vector<SDL_Texture*>(size);
-    this->setFrame(0);
-};
-
-SDL_Texture& Entity::operator[] (int idx)
-{
-    return *sprites.at(idx);
-}
 
 
 
@@ -80,10 +29,26 @@ class Game
 {
     private:
         SDL_Renderer *renderer;
+        std::shared_ptr<Entity> player;
     public:
+        Game();
+        void events();
+        
+        inline std::shared_ptr<Entity> getPlayer() { return player; };
+
         inline void set_renderer(SDL_Renderer *r) { renderer = r; }
         inline SDL_Renderer* get_renderer() { return renderer; }
 };
+
+Game::Game()
+{
+    player = std::shared_ptr<Player>(); 
+}
+
+void Game::events()
+{
+
+}
 
 int main(int argc, char **argv)
 {
@@ -111,9 +76,7 @@ int main(int argc, char **argv)
 
     int done = 0;
 
-    Entity mov(0, 0, 1);
-    mov.set_x(0);
-    mov.set_y(0);
+    Player mov;
 
     SDL_Event event;
     while (!done)

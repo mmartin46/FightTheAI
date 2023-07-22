@@ -26,6 +26,8 @@ class Game
         Player player;
     public:
         Game();
+        void loadTextures();
+        void render();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
         inline void setPlayer(const Player &p) { player = p; }
@@ -39,8 +41,46 @@ Game::Game()
 {
     getPlayer()->set_x(0);
     getPlayer()->set_y(0);
+    getPlayer()->set_w(20);
+    getPlayer()->set_h(20);
 }
 
+void Game::render()
+{
+    SDL_SetRenderDrawColor(this->getRenderer(), 120, 120, 120, 255);
+    SDL_RenderClear(this->getRenderer());
+
+
+    SDL_Rect rect;
+
+    rect = { getPlayer()->get_x(), getPlayer()->get_y(), getPlayer()->get_h(), getPlayer()->get_w() };
+    SDL_RenderCopy(this->getRenderer(), getPlayer()->getPlayerTexture(getPlayer()->getFrame()), NULL, &rect);
+
+    SDL_RenderPresent(this->getRenderer());
+}
+
+void Game::loadTextures()
+{
+    using std::string;
+
+    SDL_Surface *surface = NULL;
+    string filePath;
+    int idx;
+
+    for (idx = 0; idx < 1; ++idx)
+    {
+        filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
+        surface = IMG_Load(filePath.c_str());
+        if (surface == NULL)
+        {
+            std::cout << "loadTextures player(): No texture for " + filePath;
+            SDL_Quit();
+            exit(1);
+        }
+        getPlayer()->setPlayerTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        SDL_FreeSurface(surface);
+    }
+}
 
 void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
 {
@@ -78,6 +118,11 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         {
             getPlayer()->set_x(getPlayer()->get_x() - 1);
         }
+        else if (state[SDL_SCANCODE_RIGHT])
+        {
+            getPlayer()->set_x(getPlayer()->get_x() + 1);
+        }
+
         
         std::cout << getPlayer()->get_x() << std::endl;
     }
@@ -106,6 +151,7 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
     SDL_RenderSetLogicalSize(game.getRenderer(), SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    game.loadTextures();
 
     int done = 0;
 
@@ -113,6 +159,7 @@ int main(int argc, char **argv)
     while (!done)
     {
         game.eventHandler(window, event, done);
+        game.render();
     }
 
     SDL_DestroyWindow(window);

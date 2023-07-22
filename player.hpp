@@ -9,11 +9,12 @@ class Player : public Entity
 {
     private:
         /* data */
-        float x, y;
+        int x, y, w, h;
         float dx, dy;
         int onBlock;
         bool landed;
         int animFrame;
+        int frame;
 
         bool slowingDown, facingLeft;
         // Images
@@ -27,6 +28,7 @@ class Player : public Entity
         // Player Textures
         void setPlayerTexture(int idx, SDL_Texture *texture);
         inline SDL_Texture* getPlayerTexture(int idx) { return textures.at(idx); }
+
         
         // Movement
         inline virtual void apply_gravity() { dy += GRAVITY; } // Accumulates the gravity constant to the player.
@@ -50,6 +52,7 @@ class Player : public Entity
         inline virtual void setFacingLeft(int v) { facingLeft = v; }
         inline virtual bool getSlowingDown() { return slowingDown; } const
         inline virtual void setSlowingDown(bool s) { slowingDown = s; }
+
 };  
 
 
@@ -58,6 +61,8 @@ Player::Player()
     std::cout << "wut";
     this->set_x(0);
     this->set_y(0);
+    this->set_h(20);
+    this->set_w(20);
     this->set_dx(0);
     this->set_dy(0);
     textures = std::vector<SDL_Texture*>(30);
@@ -83,3 +88,4 @@ void Player::setPlayerTexture(int idx, SDL_Texture *texture)
     // Set the texture
     textures.at(idx) = texture;
 }
+

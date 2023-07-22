@@ -19,30 +19,26 @@ to the one at Children's Lighthouse
 
 
 
-
-
-
-
-
-
 class Game
 {
     private:
         SDL_Renderer *renderer;
-        std::shared_ptr<Entity> player;
+        Player player;
     public:
         Game();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
-        inline std::shared_ptr<Entity> getPlayer() { return player; };
+        inline void setPlayer(const Player &p) { player = p; }
+        inline Player* getPlayer() { return &player; };
 
-        inline void set_renderer(SDL_Renderer *r) { renderer = r; }
-        inline SDL_Renderer* get_renderer() { return renderer; }
+        inline void setRenderer(SDL_Renderer *r) { renderer = r; }
+        inline SDL_Renderer* getRenderer() { return renderer; }
 };
 
 Game::Game()
 {
-    player = std::shared_ptr<Player>(); 
+    getPlayer()->set_x(0);
+    getPlayer()->set_y(0);
 }
 
 
@@ -76,6 +72,14 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
             }
             break;
         }
+
+        const Uint8 *state = SDL_GetKeyboardState(NULL);
+        if (state[SDL_SCANCODE_LEFT])
+        {
+            getPlayer()->set_x(getPlayer()->get_x() - 1);
+        }
+        
+        std::cout << getPlayer()->get_x() << std::endl;
     }
 }
 
@@ -97,10 +101,10 @@ int main(int argc, char **argv)
     );
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    game.set_renderer(renderer);
+    game.setRenderer(renderer);
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
-    SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderSetLogicalSize(game.getRenderer(), SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
     int done = 0;
@@ -112,6 +116,6 @@ int main(int argc, char **argv)
     }
 
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(game.get_renderer());
+    SDL_DestroyRenderer(game.getRenderer());
     return 0;
 }

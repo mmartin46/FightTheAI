@@ -55,6 +55,7 @@ class Player : public Entity
 
 Player::Player()
 {
+    std::cout << "wut";
     this->set_x(0);
     this->set_y(0);
     this->set_dx(0);

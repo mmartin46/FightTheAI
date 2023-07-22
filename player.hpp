@@ -33,11 +33,22 @@ class Player : public Entity
         // Movement
         inline virtual void apply_gravity() { dy += GRAVITY; } // Accumulates the gravity constant to the player.
                 
-        inline virtual void moveLeft() { dx += -PLAYERSPEEDLIMIT; }
-        inline virtual void moveRight() { dx += PLAYERSPEEDLIMIT; }
+        inline virtual void moveLeft(int v) { set_x(get_x() - v); }
+        inline virtual void moveRight(int v) { set_x(get_x() + v); }
+        inline virtual void moveUp(int v) { set_y(get_y() - 1); }
+        inline virtual void moveDown(int v) { set_y(get_y() + 1); }
+
+        void leftMovement(const int &dist);
+        void rightMovement(const int &dist);
+
+
 
         inline virtual void set_left_dx() { dx = -PLAYERSPEEDDX; }
         inline virtual void set_right_dx() { dx = PLAYERSPEEDDX; }
+
+        void leftMovment();
+        void rightMovement();
+
 
         inline virtual void slowMovement() { dx *= 0.8; }
         inline virtual void stopMovement() { dx = 0; }
@@ -55,6 +66,27 @@ class Player : public Entity
 
 };  
 
+void Player::leftMovement(const int &dist)
+{
+    set_dx(get_dx() - PLAYERSPEEDLIMIT);
+    if (get_dx() < -dist)
+    {
+        set_dx(-PLAYERSPEEDDX);
+    }
+    this->setFacingLeft(true);
+    this->setSlowingDown(false);
+}
+
+void Player::rightMovement(const int &dist)
+{
+    set_dx(get_dx() + PLAYERSPEEDLIMIT);
+    if (get_dx() > dist)
+    {
+        set_dx(PLAYERSPEEDDX);
+    }
+    this->setFacingLeft(true);
+    this->setSlowingDown(false);
+}
 
 Player::Player()
 {

@@ -22,6 +22,7 @@ to the one at Children's Lighthouse
 class Game
 {
     private:
+        int time;
         SDL_Renderer *renderer;
         Player player;
     public:
@@ -35,12 +36,15 @@ class Game
 
         inline void setRenderer(SDL_Renderer *r) { renderer = r; }
         inline SDL_Renderer* getRenderer() { return renderer; }
+
+        inline int getTime() { return time; }
+        inline void setTime(int t) { time = t; }
 };
 
 Game::Game()
 {
-    getPlayer()->set_x(0);
-    getPlayer()->set_y(0);
+    getPlayer()->set_x(200);
+    getPlayer()->set_y(200);
     getPlayer()->set_w(20);
     getPlayer()->set_h(20);
 }

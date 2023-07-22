@@ -42,6 +42,10 @@ Game::Game()
     getPlayer()->set_dy(0);
 }
 
+void Game::loadWorld()
+{
+    
+}
 
 
 void Game::animate()

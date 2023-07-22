@@ -30,7 +30,7 @@ class Player : public Entity
 
         
         // Movement
-        inline virtual void applyGravity() { dy += GRAVITY; } // Accumulates the gravity constant to the player.
+        inline virtual void applyGravity() { set_dy(get_dy() + 0.5f); } // Accumulates the gravity constant to the player.
         inline virtual void applyJump() { dy -= 0.3f; }
 
         inline virtual void moveLeft(int v) { set_x(get_x() - v); }
@@ -142,3 +142,32 @@ void Player::setPlayerTexture(int idx, SDL_Texture *texture)
     textures.at(idx) = texture;
 }
 
+
+
+class Shot : public Entity
+{
+    private:
+        /* data */
+        float x, y;
+        int w, h;
+        float dx, dy;
+        int onBlock;
+        bool landed;
+        int animFrame;
+        int frame;
+
+        bool didShoot, resetShoot; 
+        // Images
+        std::vector<SDL_Texture*> textures;
+    public:
+        Shot(Player *);
+        bool getDidShoot() { return didShoot; }
+        inline void resetDidShoot() { didShoot = false; }
+        inline void setDidShoot() { didShoot = true; }
+};
+
+Shot::Shot(Player *player)
+{
+    this->set_x(player->get_x());
+    this->set_y(player->get_y());
+}

@@ -54,7 +54,7 @@ void Game::animate()
     // Temporary Gravity
     if (getPlayer()->get_y() < (WINDOW_HEIGHT - 20))
     {
-        getPlayer()->set_dy(getPlayer()->get_dy() + 0.5f);
+        getPlayer()->applyGravity();
     }
     else
     {

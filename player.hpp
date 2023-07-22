@@ -41,12 +41,7 @@ class Player : public Entity
 
         void leftMovement(int dist);
         void rightMovement(int dist);
-
-
-
-        inline virtual void set_left_dx(float limit) { dx = -limit; }
-        inline virtual void set_right_dx(float limit) { dx = limit; }
-
+        void downMovement();
 
         inline virtual void slowMovement() { dx *= 0.8; }
         inline virtual void stopMovement() { dx = 0; }
@@ -66,24 +61,39 @@ class Player : public Entity
 
 void Player::leftMovement(int dist)
 {
-    set_dx(get_dx() - PLAYERSPEED);
+    set_dx(get_dx() + -PLAYERSPEED);
     if (get_dx() < -dist)
     {
-       set_left_dx(PLAYERSPEEDDX);
+       set_dx(-PLAYERSPEEDDX);
     }
     this->setFacingLeft(true);
     this->setSlowingDown(false);
 }
 
+// Applys right movement
+// If the player dx is less than
+// the "dist" variable increase
+// dx by the PLAYERSPEED macro
 void Player::rightMovement(int dist)
 {
     set_dx(get_dx() + PLAYERSPEED);
     if (get_dx() > dist)
     {
-        set_right_dx(PLAYERSPEEDDX);
+        set_dx(PLAYERSPEEDDX);
     }
     this->setFacingLeft(true);
     this->setSlowingDown(false);
+}
+
+void Player::downMovement()
+{
+    set_dx(get_dx() * 0.8);
+    setSlowingDown(true);
+    if (SDL_fabsf(get_dx()) < 0.1f)
+    {
+        set_dx(0);
+    }
+
 }
 
 Player::Player()
@@ -96,6 +106,11 @@ Player::Player()
     this->set_dx(0);
     this->set_dy(0);
     textures = std::vector<SDL_Texture*>(30);
+
+    this->resetOnBlock();
+    this->setFrame(0);
+    this->setFacingLeft(true);
+    this->setSlowingDown(false);
 }
 
 Player::Player(float x, float y)

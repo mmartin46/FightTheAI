@@ -25,6 +25,8 @@ class Game
         int time;
         SDL_Renderer *renderer;
         Player player;
+
+        
     public:
         Game();
         void loadTextures();
@@ -59,8 +61,7 @@ void Game::animate()
 
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
 
-    std::cout << getPlayer()->get_dx() << std::endl;
-
+    std::cout <<getPlayer()->get_dx() << std::endl;
 }
 
 void Game::render()
@@ -126,23 +127,28 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
                     case SDLK_ESCAPE:
                         done = 1;
                     break;
+                    case SDLK_UP:
+                        if (getPlayer()->getOnBlock())
+                        {
+                            getPlayer()->resetOnBlock();
+                        }
                 }
             }
             break;
         }
-
-        const Uint8 *state = SDL_GetKeyboardState(NULL);
-        if (state[SDL_SCANCODE_LEFT])
-        {
-            getPlayer()->leftMovement(2);
-        }
-        else if (state[SDL_SCANCODE_RIGHT])
-        {
-            getPlayer()->rightMovement(2);
-        }
-
-
-
+    }
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_LEFT])
+    {
+        getPlayer()->leftMovement(3);
+    }
+    else if (state[SDL_SCANCODE_RIGHT])
+    {
+        getPlayer()->rightMovement(3);
+    }
+    else
+    {
+        getPlayer()->downMovement();
     }
 }
 
@@ -176,9 +182,10 @@ int main(int argc, char **argv)
     SDL_Event event;
     while (!done)
     {
-        game.render();
-        game.animate();
+
         game.eventHandler(window, event, done);
+        game.animate();
+        game.render();
 
     }
 

@@ -101,8 +101,6 @@ Player::Player()
     std::cout << "wut";
     this->set_x(0);
     this->set_y(0);
-    this->set_h(20);
-    this->set_w(20);
     this->set_dx(0);
     this->set_dy(0);
     textures = std::vector<SDL_Texture*>(30);

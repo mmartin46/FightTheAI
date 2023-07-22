@@ -1,5 +1,4 @@
 // John 3:16
-#include "utilities.cpp"
 #include "entity.hpp"
 #include "player.hpp"
 
@@ -51,8 +50,6 @@ Game::Game()
     getPlayer()->set_y(200);
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
-    getPlayer()->set_w(20);
-    getPlayer()->set_h(20);
 }
 
 void Game::animate()
@@ -96,6 +93,12 @@ void Game::loadTextures()
             SDL_Quit();
             exit(1);
         }
+        if (idx == 0)
+        {
+            getPlayer()->set_w(getImageDimensions(filePath.c_str()).first);
+            getPlayer()->set_h(getImageDimensions(filePath.c_str()).second);
+        }
+
         getPlayer()->setPlayerTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }

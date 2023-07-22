@@ -3,10 +3,32 @@
 #include <SDL2\SDL_mixer.h>
 #include <SDL2\SDL_ttf.h>
 #include <iostream>
-#include <vector>
 #include <memory>
-#include <sstream>
+#include <thread>
+#include <chrono>
+#include <math.h>
+#include <vector>
+#include <fstream>
 #include <string>
+#include <sstream>
+#include <stdlib.h>
+#include <utility>
+#include <cstdlib>
+#include <unordered_map>
+#include <algorithm>
+#include <future>
+#include <dirent.h>
+#include <sys/types.h>
+using std::unordered_map;
+using namespace std::chrono;
+
+template <typename T>
+using Matrix = std::vector<std::vector<T> >;
+using std::pair;
+using std::shared_ptr;
+using std::vector;
+using std::string;
+using std::unordered_map;
 
 // Utilies bit operations to save of space.
 namespace bitset
@@ -101,7 +123,6 @@ Gets the image dimensions.
 \return pair.first -> width
 
 \return pair.second -> height
-
 
 https://stackoverflow.com/questions/5354459/
 c-how-to-get-the-image-size-of-a-png-file-in-directory

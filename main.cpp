@@ -29,6 +29,7 @@ class Game
         Game();
         void loadTextures();
         void render();
+        void animate();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
         inline void setPlayer(const Player &p) { player = p; }
@@ -43,10 +44,23 @@ class Game
 
 Game::Game()
 {
+    setTime(0);
     getPlayer()->set_x(200);
     getPlayer()->set_y(200);
+    getPlayer()->set_dx(0);
+    getPlayer()->set_dy(0);
     getPlayer()->set_w(20);
     getPlayer()->set_h(20);
+}
+
+void Game::animate()
+{
+    setTime(getTime() + 1);
+
+    getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
+
+    std::cout << getPlayer()->get_dx() << std::endl;
+
 }
 
 void Game::render()
@@ -57,7 +71,7 @@ void Game::render()
 
     SDL_Rect rect;
 
-    rect = { getPlayer()->get_x(), getPlayer()->get_y(), getPlayer()->get_h(), getPlayer()->get_w() };
+    rect = { static_cast<int>(getPlayer()->get_x()), static_cast<int>(getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getPlayer()->getPlayerTexture(getPlayer()->getFrame()), NULL, &rect);
 
     SDL_RenderPresent(this->getRenderer());
@@ -120,15 +134,15 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         const Uint8 *state = SDL_GetKeyboardState(NULL);
         if (state[SDL_SCANCODE_LEFT])
         {
-            getPlayer()->set_x(getPlayer()->get_x() - 1);
+            getPlayer()->leftMovement(2);
         }
         else if (state[SDL_SCANCODE_RIGHT])
         {
-            getPlayer()->set_x(getPlayer()->get_x() + 1);
+            getPlayer()->rightMovement(2);
         }
 
-        
-        std::cout << getPlayer()->get_x() << std::endl;
+
+
     }
 }
 
@@ -162,8 +176,10 @@ int main(int argc, char **argv)
     SDL_Event event;
     while (!done)
     {
-        game.eventHandler(window, event, done);
         game.render();
+        game.animate();
+        game.eventHandler(window, event, done);
+
     }
 
     SDL_DestroyWindow(window);

@@ -7,17 +7,18 @@ class Entity
 {
     private:
       /* data */
-      int x, y, w, h;
+      float x, y;
+      int w, h;
       float dx, dy;
       int frame;
       std::vector<SDL_Texture*> sprites;
     public:
         Entity();
-        Entity(int x, int y, int size);
-        inline int get_x() { return x; }
-        inline void set_x(int v) { x = v; }
-        inline int get_y() { return y; }
-        inline void set_y(int v) { y = v; }
+        Entity(float x, float y, int size);
+        inline float get_x() { return x; }
+        inline void set_x(float v) { x = v; }
+        inline float get_y() { return y; }
+        inline void set_y(float v) { y = v; }
         inline float get_dx() { return dx; }
         inline void set_dx(float v) { dx = v; }
         inline float get_dy() { return dy; }
@@ -44,7 +45,7 @@ Entity::Entity()
     this->setFrame(0);    
 }
 
-Entity::Entity(int x, int y, int size)
+Entity::Entity(float x, float y, int size)
 {
     this->set_x(x);
     this->set_y(y);

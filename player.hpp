@@ -1,15 +1,16 @@
 #pragma once
 #include "entity.hpp"
 
-#define GRAVITY 0.8
-#define PLAYERSPEEDLIMIT 6
-#define PLAYERSPEEDDX 6
+#define GRAVITY 0.5f
+#define PLAYERSPEED 0.5f
+#define PLAYERSPEEDDX 3
 
 class Player : public Entity
 {
     private:
         /* data */
-        int x, y, w, h;
+        float x, y;
+        int w, h;
         float dx, dy;
         int onBlock;
         bool landed;
@@ -22,7 +23,7 @@ class Player : public Entity
 
     public:
         Player();
-        Player(int, int);
+        Player(float, float);
 
 
         // Player Textures
@@ -38,16 +39,13 @@ class Player : public Entity
         inline virtual void moveUp(int v) { set_y(get_y() - 1); }
         inline virtual void moveDown(int v) { set_y(get_y() + 1); }
 
-        void leftMovement(const int &dist);
-        void rightMovement(const int &dist);
+        void leftMovement(int dist);
+        void rightMovement(int dist);
 
 
 
-        inline virtual void set_left_dx() { dx = -PLAYERSPEEDDX; }
-        inline virtual void set_right_dx() { dx = PLAYERSPEEDDX; }
-
-        void leftMovment();
-        void rightMovement();
+        inline virtual void set_left_dx(float limit) { dx = -limit; }
+        inline virtual void set_right_dx(float limit) { dx = limit; }
 
 
         inline virtual void slowMovement() { dx *= 0.8; }
@@ -66,23 +64,23 @@ class Player : public Entity
 
 };  
 
-void Player::leftMovement(const int &dist)
+void Player::leftMovement(int dist)
 {
-    set_dx(get_dx() - PLAYERSPEEDLIMIT);
+    set_dx(get_dx() - PLAYERSPEED);
     if (get_dx() < -dist)
     {
-        set_dx(-PLAYERSPEEDDX);
+       set_left_dx(PLAYERSPEEDDX);
     }
     this->setFacingLeft(true);
     this->setSlowingDown(false);
 }
 
-void Player::rightMovement(const int &dist)
+void Player::rightMovement(int dist)
 {
-    set_dx(get_dx() + PLAYERSPEEDLIMIT);
+    set_dx(get_dx() + PLAYERSPEED);
     if (get_dx() > dist)
     {
-        set_dx(PLAYERSPEEDDX);
+        set_right_dx(PLAYERSPEEDDX);
     }
     this->setFacingLeft(true);
     this->setSlowingDown(false);
@@ -100,7 +98,7 @@ Player::Player()
     textures = std::vector<SDL_Texture*>(30);
 }
 
-Player::Player(int x, int y)
+Player::Player(float x, float y)
 {
     this->set_x(x);
     this->set_y(y);

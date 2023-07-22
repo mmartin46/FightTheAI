@@ -1,9 +1,7 @@
 #pragma once
 #include "entity.hpp"
 
-#define GRAVITY 0.5f
-#define PLAYERSPEED 0.5f
-#define PLAYERSPEEDDX 3
+
 
 class Player : public Entity
 {
@@ -32,8 +30,9 @@ class Player : public Entity
 
         
         // Movement
-        inline virtual void apply_gravity() { dy += GRAVITY; } // Accumulates the gravity constant to the player.
-                
+        inline virtual void applyGravity() { dy += GRAVITY; } // Accumulates the gravity constant to the player.
+        inline virtual void applyJump() { dy -= 0.3f; }
+
         inline virtual void moveLeft(int v) { set_x(get_x() - v); }
         inline virtual void moveRight(int v) { set_x(get_x() + v); }
         inline virtual void moveUp(int v) { set_y(get_y() - 1); }
@@ -42,9 +41,12 @@ class Player : public Entity
         void leftMovement(int dist);
         void rightMovement(int dist);
         void downMovement();
+        void upMovement(int dist);
 
         inline virtual void slowMovement() { dx *= 0.8; }
         inline virtual void stopMovement() { dx = 0; }
+
+
 
         inline virtual void setOnBlock() { onBlock = 1; }
         inline virtual void resetOnBlock() { onBlock = 0; }
@@ -93,7 +95,15 @@ void Player::downMovement()
     {
         set_dx(0);
     }
+}
 
+void Player::upMovement(int dist)
+{
+    if (getOnBlock())
+    {
+        set_dy(dist);
+        resetOnBlock();
+    }
 }
 
 Player::Player()

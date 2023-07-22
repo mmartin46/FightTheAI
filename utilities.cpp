@@ -22,6 +22,18 @@
 using std::unordered_map;
 using namespace std::chrono;
 
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+
+#define SCREEN_WIDTH 500
+#define SCREEN_HEIGHT 500
+
+#define GRAVITY 0.5f
+#define PLAYERSPEED 0.5f
+#define PLAYERSPEEDDX 3
+#define PLAYERJUMPHEIGHT -11
+
+
 template <typename T>
 using Matrix = std::vector<std::vector<T> >;
 using std::pair;

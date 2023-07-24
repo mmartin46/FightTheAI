@@ -1,6 +1,7 @@
 #pragma once
 #include "entity.hpp"
 #include "player.hpp"
+#include "map.cpp"
 
 class Game
 {
@@ -40,11 +41,18 @@ Game::Game()
     getPlayer()->set_y(200);
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
+    layer1 = Matrix<int>(100, vector<int>(100));
 }
 
 void Game::loadWorld()
 {
-    
+    for (int i = 0; i < layer1.size(); ++i)
+    {
+        for (int j = 0; j < layer1.at(i).size(); ++j)
+        {
+            layer1.at(i).at(j) = map[i][j];
+        }
+    }
 }
 
 

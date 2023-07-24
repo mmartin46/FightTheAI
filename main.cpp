@@ -34,6 +34,7 @@ int main(int argc, char **argv)
     SDL_RenderSetLogicalSize(game.getRenderer(), SCREEN_WIDTH, SCREEN_HEIGHT);
 
     game.loadTextures();
+    game.loadWorld();
 
     int done = 0;
 

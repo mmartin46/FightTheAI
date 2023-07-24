@@ -18,6 +18,12 @@ class Game
 
         // Game Objects
         Matrix<Entity> blocks;
+
+        // Game Textures
+        SDL_Texture *blockTexture;
+
+        // Scrolling
+        pair<int, int> scroll;
         
     public:
         Game();
@@ -27,14 +33,28 @@ class Game
         void animate();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
+        // Player
+
         inline void setPlayer(const Player &p) { player = p; }
         inline Player* getPlayer() { return &player; };
+
+        // Renderer
 
         inline void setRenderer(SDL_Renderer *r) { renderer = r; }
         inline SDL_Renderer* getRenderer() { return renderer; }
 
+
+        // Textures
+
+        inline void setBlockTexture(SDL_Texture *t) { blockTexture =  t; }
+        inline SDL_Texture* getBlockTexture() { return blockTexture; }
+
+        // Time
+
         inline int getTime() { return time; }
         inline void setTime(int t) { time = t; }
+
+        
 };
 
 Game::Game()
@@ -118,7 +138,7 @@ void Game::render()
             {
                 case 1 : {
                     rect = { blocks.at(x).at(y).get_x(), blocks.at(x).at(y).get_y(), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
-                    SDL_RenderCopy(this->getRenderer(), blocks.at(x).at(y).getSprite(0), NULL , &rect);
+                    SDL_RenderCopy(this->getRenderer(), getBlockTexture(), NULL , &rect);
                 } break;
             }
         }
@@ -167,13 +187,7 @@ void Game::loadTextures()
         SDL_Quit();
         exit(1);
     }
-    for (int i = 0; i < 100; ++i)
-    {
-        for (int j = 0; j < 100; ++j)
-        {
-            blocks.at(i).at(j).setSprite(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-        }
-    }
+    setBlockTexture(SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
 
 }

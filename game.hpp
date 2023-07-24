@@ -3,6 +3,9 @@
 #include "player.hpp"
 #include "map.cpp"
 
+#define BLOCK_WIDTH 20
+#define BLOCK_HEIGHT 20
+
 class Game
 {
     private:
@@ -42,6 +45,7 @@ Game::Game()
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
     layer1 = Matrix<int>(100, vector<int>(100));
+    blocks = Matrix<Entity>(100, vector<Entity>(100));
 }
 
 void Game::loadWorld()
@@ -51,6 +55,24 @@ void Game::loadWorld()
         for (int j = 0; j < layer1.at(i).size(); ++j)
         {
             layer1.at(i).at(j) = map[i][j];
+        }
+    }
+
+    for (int x = 0; x < 100; ++x)
+    {
+        for (int y = 0; y < 100; ++y)
+        {
+            // Intialize the map
+            switch(layer1.at(x).at(y))
+            {
+                case 1: {
+                    blocks.at(x).at(y).set_y((x*BLOCK_WIDTH));
+                    blocks.at(x).at(y).set_x((y*BLOCK_HEIGHT));
+                    blocks.at(x).at(y).set_w(BLOCK_WIDTH);
+                    blocks.at(x).at(y).set_h(BLOCK_HEIGHT);
+                }
+                break;
+            }
         }
     }
 }
@@ -83,7 +105,24 @@ void Game::render()
     SDL_RenderClear(this->getRenderer());
 
 
+
+
     SDL_Rect rect;
+
+    int x, y;
+    for (x = 0; x < 100; ++x)
+    {
+        for (y = 0; y < 100; ++y)
+        {
+            switch(layer1.at(x).at(y))
+            {
+                case 1 : {
+                    rect = { blocks.at(x).at(y).get_x(), blocks.at(x).at(y).get_y(), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
+                    SDL_RenderCopy(this->getRenderer(), blocks.at(x).at(y).getSprite(0), NULL , &rect);
+                } break;
+            }
+        }
+    }
 
     rect = { static_cast<int>(getPlayer()->get_x()), static_cast<int>(getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getPlayer()->getPlayerTexture(getPlayer()->getFrame()), NULL, &rect);
@@ -105,7 +144,7 @@ void Game::loadTextures()
         surface = IMG_Load(filePath.c_str());
         if (surface == NULL)
         {
-            std::cout << "loadTextures player(): No texture for " + filePath;
+            std::cout << "loadTextures player(): No texture for " + filePath << std::endl;
             SDL_Quit();
             exit(1);
         }
@@ -118,6 +157,24 @@ void Game::loadTextures()
         getPlayer()->setPlayerTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }
+
+
+    filePath = "sprites\\platforms\\block.png";
+    surface = IMG_Load(filePath.c_str());
+    if (surface == NULL)
+    {
+        std::cout << "loadTextures block(): No texture for " + filePath << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    for (int i = 0; i < 100; ++i)
+    {
+        for (int j = 0; j < 100; ++j)
+        {
+            blocks.at(i).at(j).setSprite(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        }
+    }
+    SDL_FreeSurface(surface);
 
 }
 

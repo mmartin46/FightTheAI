@@ -38,10 +38,18 @@ class Game
         inline void setPlayer(const Player &p) { player = p; }
         inline Player* getPlayer() { return &player; };
 
+        inline void setScrollX(int s) { scroll.first = s; }
+        inline int getScrollX() { return scroll.first; }
+
+        inline void setScrollY(int s) { scroll.second = s; }
+        inline int getScrollY() { return scroll.second; }
+ 
         // Renderer
 
         inline void setRenderer(SDL_Renderer *r) { renderer = r; }
         inline SDL_Renderer* getRenderer() { return renderer; }
+
+
 
 
         // Textures
@@ -50,7 +58,6 @@ class Game
         inline SDL_Texture* getBlockTexture() { return blockTexture; }
 
         // Time
-
         inline int getTime() { return time; }
         inline void setTime(int t) { time = t; }
 
@@ -60,6 +67,9 @@ class Game
 Game::Game()
 {
     setTime(0);
+    setScrollX(0);
+    setScrollY(0);
+
     getPlayer()->set_x(200);
     getPlayer()->set_y(200);
     getPlayer()->set_dx(0);
@@ -144,7 +154,7 @@ void Game::render()
         }
     }
 
-    rect = { static_cast<int>(getPlayer()->get_x()), static_cast<int>(getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
+    rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getPlayer()->getPlayerTexture(getPlayer()->getFrame()), NULL, &rect);
 
     SDL_RenderPresent(this->getRenderer());

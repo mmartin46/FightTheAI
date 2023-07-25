@@ -126,7 +126,15 @@ void Game::animate()
         getPlayer()->setOnBlock();
     }
 
-    std::cout << getPlayer()->get_dy() << std::endl;
+    this->setScrollX(-getPlayer()->get_x() + WINDOW_WIDTH / 2);
+    this->setScrollY(-getPlayer()->get_y() + WINDOW_HEIGHT / 2);
+
+    // if (this->getScrollX() > 0)
+    // {
+    //     this->setScrollX(0);
+    // }
+
+    std::cout << getPlayer()->get_x() << std::endl;
 }
 
 void Game::render()
@@ -147,7 +155,7 @@ void Game::render()
             switch(layer1.at(x).at(y))
             {
                 case 1 : {
-                    rect = { blocks.at(x).at(y).get_x(), blocks.at(x).at(y).get_y(), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
+                    rect = { static_cast<int>(getScrollX() + blocks.at(x).at(y).get_x()), static_cast<int>(getScrollY() + blocks.at(x).at(y).get_y()), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
                     SDL_RenderCopy(this->getRenderer(), getBlockTexture(), NULL , &rect);
                 } break;
             }

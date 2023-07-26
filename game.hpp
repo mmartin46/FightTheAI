@@ -1,5 +1,5 @@
 #pragma once
-#include "entity.hpp"
+#include "shot.hpp"
 #include "player.hpp"
 #include "map.cpp"
 
@@ -12,6 +12,7 @@ class Game
         int time;
         SDL_Renderer *renderer;
         Player player;
+        Shot shot;
 
         // Game Layers
         Matrix<int> layer1; 
@@ -21,6 +22,7 @@ class Game
 
         // Game Textures
         SDL_Texture *blockTexture;
+        SDL_Texture *shotTexture;
 
         // Scrolling
         pair<float, float> scroll;
@@ -44,11 +46,16 @@ class Game
 
         inline void setScrollY(int s) { scroll.second = s; }
         inline int getScrollY() { return scroll.second; }
- 
+
+        // Shot
+        inline Shot* getShot() { return &shot; }
+        void shotMovement();
+
         // Renderer
 
         inline void setRenderer(SDL_Renderer *r) { renderer = r; }
         inline SDL_Renderer* getRenderer() { return renderer; }
+
 
 
         template <typename T>
@@ -58,6 +65,9 @@ class Game
 
         inline void setBlockTexture(SDL_Texture *t) { blockTexture =  t; }
         inline SDL_Texture* getBlockTexture() { return blockTexture; }
+
+        inline void setShotTexture(SDL_Texture *t) { shotTexture = t; }
+        inline SDL_Texture* getShotTexture() { return shotTexture; }
 
         // Time
         inline int getTime() { return time; }
@@ -156,6 +166,8 @@ Game::Game()
     getPlayer()->set_y(200);
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
+
+
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
 }
@@ -236,6 +248,11 @@ void Game::render()
     rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getPlayer()->getTexture(getPlayer()->getFrame()), NULL, &rect);
 
+
+    rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
+    SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
+
+
     SDL_RenderPresent(this->getRenderer());
 }
 
@@ -277,6 +294,17 @@ void Game::loadTextures()
         exit(1);
     }
     setBlockTexture(SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+    SDL_FreeSurface(surface);
+
+    filePath = "sprites\\shot\\shot.png";
+    surface = IMG_Load(filePath.c_str());
+    if (surface == NULL)
+    {
+        std::cout << "loadTextures shot(): No texture for " + filePath << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+    setShotTexture(SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
 
 }
@@ -330,6 +358,10 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     else if (state[SDL_SCANCODE_RIGHT])
     {
         getPlayer()->rightMovement(3);
+    }
+    else if (state[SDL_SCANCODE_SPACE])
+    {
+        getShot()->set_x(getShot()->get_x() + 1);
     }
     else
     {

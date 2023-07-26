@@ -1,5 +1,4 @@
 #pragma once
-#include "entity.hpp"
 
 
 
@@ -143,30 +142,3 @@ void Player::setTexture(int idx, SDL_Texture *texture)
 
 
 
-class Shot : public Entity
-{
-    private:
-        /* data */
-        float x, y;
-        int w, h;
-        float dx, dy;
-        int onBlock;
-        bool landed;
-        int animFrame;
-        int frame;
-
-        bool didShoot, resetShoot; 
-        // Images
-        std::vector<SDL_Texture*> textures;
-    public:
-        Shot(Player *);
-        bool getDidShoot() { return didShoot; }
-        inline void resetDidShoot() { didShoot = false; }
-        inline void setDidShoot() { didShoot = true; }
-};
-
-Shot::Shot(Player *player)
-{
-    this->set_x(player->get_x());
-    this->set_y(player->get_y());
-}

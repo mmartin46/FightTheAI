@@ -197,26 +197,8 @@ void Game::animate()
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
 
-    // Temporary Gravity
-    if (getPlayer()->get_y() < (WINDOW_HEIGHT - 20))
-    {
-        getPlayer()->applyGravity();
-    }
-    else
-    {
-        getPlayer()->set_dy(0);
-        getPlayer()->setOnBlock();
-    }
 
-    this->setScrollX(-getPlayer()->get_x() + WINDOW_WIDTH / 2);
-    this->setScrollY(-getPlayer()->get_y() + WINDOW_HEIGHT / 2);
-
-    // if (this->getScrollX() > 0)
-    // {
-    //     this->setScrollX(0);
-    // }
-
-    std::cout << getPlayer()->get_x() << std::endl;
+    getPlayer()->applyGravity();
 }
 
 void Game::render()

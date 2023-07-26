@@ -14,7 +14,7 @@ class Entity
         std::vector<SDL_Texture*> textures;
     public:
         Entity();
-        Entity(float x, float y, int size);
+        Entity(float x, float y, unsigned int size);
         inline float get_x() { return x; }
         inline void set_x(float v) { x = v; }
         inline float get_y() { return y; }
@@ -46,7 +46,7 @@ Entity::Entity()
     this->setFrame(0);    
 }
 
-Entity::Entity(float x, float y, int size)
+Entity::Entity(float x, float y, unsigned int size)
 {
     this->set_x(x);
     this->set_y(y);

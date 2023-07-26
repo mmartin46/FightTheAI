@@ -25,8 +25,8 @@ class Player : public Entity
 
 
         // Player Textures
-        void setPlayerTexture(int idx, SDL_Texture *texture);
-        inline SDL_Texture* getPlayerTexture(int idx) { return textures.at(idx); }
+        void setTexture(int idx, SDL_Texture *texture);
+        inline SDL_Texture* getTexture(int idx) { return textures.at(idx); }
 
         
         // Movement
@@ -128,7 +128,7 @@ Player::Player(float x, float y)
 }
 
 
-void Player::setPlayerTexture(int idx, SDL_Texture *texture)
+void Player::setTexture(int idx, SDL_Texture *texture)
 {
     // If the index out of range.
     if (idx >= textures.size() || idx < 0)

@@ -43,10 +43,11 @@ int main(int argc, char **argv)
     {
 
         game.eventHandler(window, event, done);
+        game.collisionManager();
         game.animate();
         game.render();
-        game.collisionManager();
 
+        std::this_thread::sleep_for (std::chrono::milliseconds(10));
     }
 
     SDL_DestroyWindow(window);

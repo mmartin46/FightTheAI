@@ -18,15 +18,17 @@
 #include <algorithm>
 #include <future>
 #include <dirent.h>
+#include <chrono>
+#include <thread>
 #include <sys/types.h>
 using std::unordered_map;
 using namespace std::chrono;
 
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
-#define SCREEN_WIDTH 500
-#define SCREEN_HEIGHT 500
+#define SCREEN_WIDTH 420
+#define SCREEN_HEIGHT 236
 
 #define GRAVITY 0.5f
 #define PLAYERSPEED 0.5f
@@ -61,6 +63,9 @@ namespace bitset
 
 
 }
+
+
+
 
 int collide2d(float x1, float x2, float y1, float y2, float ht1, float wt1, float wt2, float ht2)
 {

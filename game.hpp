@@ -23,7 +23,7 @@ class Game
         SDL_Texture *blockTexture;
 
         // Scrolling
-        pair<int, int> scroll;
+        pair<float, float> scroll;
         
     public:
         Game();
@@ -192,13 +192,20 @@ void Game::loadWorld()
 
 void Game::animate()
 {
+    // Timer
     setTime(getTime() + 1);
+
 
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
 
-
+    // Gravity
     getPlayer()->applyGravity();
+
+    // Scrolling
+    this->setScrollX(-getPlayer()->get_x() + SCREEN_WIDTH / 2);
+    this->setScrollY(-getPlayer()->get_y() + SCREEN_HEIGHT / 2);
+
 }
 
 void Game::render()
@@ -227,7 +234,7 @@ void Game::render()
     }
 
     rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
-    SDL_RenderCopy(this->getRenderer(), getPlayer()->getPlayerTexture(getPlayer()->getFrame()), NULL, &rect);
+    SDL_RenderCopy(this->getRenderer(), getPlayer()->getTexture(getPlayer()->getFrame()), NULL, &rect);
 
     SDL_RenderPresent(this->getRenderer());
 }
@@ -256,7 +263,7 @@ void Game::loadTextures()
             getPlayer()->set_h(getImageDimensions(filePath.c_str()).second);
         }
 
-        getPlayer()->setPlayerTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        getPlayer()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }
 

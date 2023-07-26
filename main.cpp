@@ -45,6 +45,7 @@ int main(int argc, char **argv)
         game.eventHandler(window, event, done);
         game.animate();
         game.render();
+        game.collisionManager();
 
     }
 

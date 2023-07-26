@@ -31,6 +31,7 @@ class Game
         void loadWorld();
         void render();
         void animate();
+        void collisionManager();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
         // Player
@@ -50,7 +51,8 @@ class Game
         inline SDL_Renderer* getRenderer() { return renderer; }
 
 
-
+        template <typename T>
+        int mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PLAYER_WIDTH, int PLAYER_HEIGHT);
 
         // Textures
 
@@ -63,6 +65,86 @@ class Game
 
         
 };
+
+template <typename T>
+int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PLAYER_WIDTH, int PLAYER_HEIGHT)
+{
+    int touched = 0;
+    float pw = PLAYER_WIDTH, ph = PLAYER_HEIGHT;
+    float px = plyr.get_x(), py = plyr.get_y();
+    float bx = blocks.at(row).at(col).get_x(), by = blocks.at(row).at(col).get_y(), bw = blocks.at(row).at(col).get_w(), bh = blocks.at(row).at(col).get_h();
+
+if (px+pw/2 > bx && px+pw/2 < bx+bw)
+    {
+        // Head Bump
+        if (py < by+bh && py>by && plyr.get_dy() < 0)
+        {
+            // correct y
+            plyr.set_y(by+bh);
+            py = by+bh;
+
+            // bumped our head, stop any jump velocity
+            plyr.set_dy(0);
+            plyr.resetOnBlock();
+            touched = 1;
+        }
+    }
+    if (px+pw > bx && px<bx+bw)
+    {
+        // Head bump
+        if (py+ph > by && py < by && plyr.get_dy() > 0)
+        {
+            // correct y
+            plyr.set_y(by-ph);
+            py = by-ph;
+
+            //landed on this ledge, stop any jump velocity
+            plyr.set_dy(0);
+            plyr.setOnBlock();
+            touched = 2;
+        }
+    }
+
+    if (py+ph > by && py<by+bh)
+    {
+        // Rubbing against right edge
+        if (px < bx+bw && px+pw > bx+bw && plyr.get_dx() < 0)
+        {
+            // correct x
+            plyr.set_x(bx+bw);
+            px = bx+bw;
+
+            plyr.set_dx(0);
+            touched = 3;
+        }
+        // Rubbing against left edge
+        else if (px+pw > bx && px < bx && plyr.get_dx() > 0)
+        {
+            // correct x
+            plyr.set_x(bx-pw);
+            px = bx-pw;
+
+            plyr.set_dx(0);
+            touched = 4;
+        }
+    }
+    return touched;
+}
+
+void Game::collisionManager()
+{
+    int row, col = 0;
+    for (row = 0; row < 100; ++row)
+    {
+        for (col = 0; col < 100; ++col)
+        {
+            if (this->layer1.at(row).at(col) == world::BLOCK)
+            {
+                mapCollision(*getPlayer(), this->blocks, row, col, 20, 20);
+            }
+        }
+    }
+}
 
 Game::Game()
 {
@@ -84,7 +166,7 @@ void Game::loadWorld()
     {
         for (int j = 0; j < layer1.at(i).size(); ++j)
         {
-            layer1.at(i).at(j) = map[i][j];
+            layer1.at(i).at(j) = world::map[i][j];
         }
     }
 
@@ -95,7 +177,7 @@ void Game::loadWorld()
             // Intialize the map
             switch(layer1.at(x).at(y))
             {
-                case 1: {
+                case world::BLOCK: {
                     blocks.at(x).at(y).set_y((x*BLOCK_WIDTH));
                     blocks.at(x).at(y).set_x((y*BLOCK_HEIGHT));
                     blocks.at(x).at(y).set_w(BLOCK_WIDTH);
@@ -154,7 +236,7 @@ void Game::render()
         {
             switch(layer1.at(x).at(y))
             {
-                case 1 : {
+                case world::BLOCK : {
                     rect = { static_cast<int>(getScrollX() + blocks.at(x).at(y).get_x()), static_cast<int>(getScrollY() + blocks.at(x).at(y).get_y()), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
                     SDL_RenderCopy(this->getRenderer(), getBlockTexture(), NULL , &rect);
                 } break;

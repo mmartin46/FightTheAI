@@ -74,7 +74,7 @@ int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PL
     float px = plyr.get_x(), py = plyr.get_y();
     float bx = blocks.at(row).at(col).get_x(), by = blocks.at(row).at(col).get_y(), bw = blocks.at(row).at(col).get_w(), bh = blocks.at(row).at(col).get_h();
 
-if (px+pw/2 > bx && px+pw/2 < bx+bw)
+    if (px+pw/2 > bx && px+pw/2 < bx+bw)
     {
         // Head Bump
         if (py < by+bh && py>by && plyr.get_dy() < 0)

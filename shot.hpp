@@ -1,13 +1,13 @@
 #pragma once
-#include "entity.hpp"
+#include "player.hpp"
 
 enum class status {
-    DIDSHOOT = 0,
+    DIDSHOOT,
     DIDNTSHOOT 
 };
 
 
-class Shot : public Entity
+class Shot : public Player
 {
     private:
         /* data */
@@ -33,6 +33,7 @@ class Shot : public Entity
 
 Shot::Shot()
 {
+    resetDidShoot();
     set_x(0);
     set_y(0);
     set_w(getImageDimensions("sprites\\shot\\shot.png").first);
@@ -44,6 +45,7 @@ Shot::Shot()
 
 Shot::Shot(int x, int y, unsigned int size)
 {
+    resetDidShoot();
     set_x(x);
     set_y(y);
     set_dx(0);

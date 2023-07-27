@@ -50,6 +50,7 @@ class Game
         // Shot
         inline Shot* getShot() { return &shot; }
         void shotMovement();
+        void matchShotPosition(Player *player);
 
         // Renderer
 
@@ -151,6 +152,7 @@ void Game::collisionManager()
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
                 mapCollision(*getPlayer(), this->blocks, row, col, 20, 20);
+                mapCollision(*getShot(), this->blocks, row, col, 5, 5);
             }
         }
     }
@@ -201,15 +203,27 @@ void Game::loadWorld()
     }
 }
 
+// Make the shot position match a specific player
+void Game::matchShotPosition(Player *player)
+{
+    getShot()->set_x(player->get_x() + 5);
+    getShot()->set_y(player->get_y() + 5);
+}
+
 
 void Game::animate()
 {
     // Timer
     setTime(getTime() + 1);
 
-
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
+
+    // Shot Positioning
+    if (getShot()->getDidShoot() == status::DIDNTSHOOT)
+    {
+        matchShotPosition(getPlayer());
+    }
 
     // Gravity
     getPlayer()->applyGravity();
@@ -347,6 +361,12 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         }
     }
     const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_SPACE])
+    {
+        shotMovement();
+    }
+
     if (state[SDL_SCANCODE_UP])
     {
         getPlayer()->applyJump();
@@ -359,12 +379,23 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     {
         getPlayer()->rightMovement(3);
     }
-    else if (state[SDL_SCANCODE_SPACE])
-    {
-        getShot()->set_x(getShot()->get_x() + 1);
-    }
     else
     {
         getPlayer()->downMovement();
     }
+}
+
+
+void Game::shotMovement()
+{
+    getShot()->setDidShoot();
+
+    getShot()->rightMovement(10);
+
+
+
+    getShot()->set_x(getShot()->get_x() + getShot()->get_dx());
+    getShot()->set_y(getShot()->get_y() + getShot()->get_dy());
+
+    getShot()->applyGravity();
 }

@@ -257,7 +257,7 @@ void Game::animate()
         getShot()->set_dx(getShot()->get_dx() + 0.5);
     }
 
-    getPlayer()->animation(getTime() % 20);
+    getPlayer()->animation(getTime());
 
 
     getShot()->applyGravity();

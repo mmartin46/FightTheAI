@@ -63,42 +63,49 @@ class Player : public Entity
 
 };  
 
+bool inclusive_range(int start, int end, int time)
+{
+    return (((time) > start) && ((time) <= end));
+}
+
 
 void Player::animation(int time)
 {
-    if ((time % 20) < 20)
+    time = (time % 20);
+    if (time < 20)
     {
-        if ((time % 20) <= 3.5)
+        if (time <= 3.5)
         {
-            getPlayer()->setFrame(0);
+            setFrame(0);
         }
-        else if (((time % 20) > 3.5) && (time % 20) <= 5)
+
+        else if (inclusive_range(3.5, 5, time))
         {
-            getPlayer()->setFrame(1);
+            setFrame(1);
         }
-        else if (((time % 20) > 5) && (time % 20) <= 7.5)
+        else if (inclusive_range(5, 7.5, time))
         {
-            getPlayer()->setFrame(2);
+            setFrame(2);
         }
-        else if (((time % 20) > 7.5) && (time % 20) <= 10)
+        else if (inclusive_range(7.5, 10, time))
         {
-            getPlayer()->setFrame(3);
+            setFrame(3);
         }
-        else if (((time % 20) > 10) && (time % 20) <= 13.5)
+        else if (inclusive_range(10, 13.5, time))
         {
-            getPlayer()->setFrame(4);
+            setFrame(4);
         }
-        else if (((time % 20) > 13.5) && (time % 20) <= 15)
+        else if (inclusive_range(13.5, 15, time))
         {
-            getPlayer()->setFrame(5);
+            setFrame(5);
         }
-        else if (((time % 20) > 15) && (time % 20) <= 17.5)
+        else if (inclusive_range(15, 17.5, time))
         {
-            getPlayer()->setFrame(6);
+            setFrame(6);
         }
         else
         {
-            getPlayer()->setFrame(7);
+            setFrame(7);
         }
     }
 }

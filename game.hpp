@@ -257,41 +257,7 @@ void Game::animate()
         getShot()->set_dx(getShot()->get_dx() + 0.5);
     }
 
-    if ((getTime() % 20) < 20)
-    {
-        if ((getTime() % 20) <= 3.5)
-        {
-            getPlayer()->setFrame(0);
-        }
-        else if (((getTime() % 20) > 3.5) && (getTime() % 20) <= 5)
-        {
-            getPlayer()->setFrame(1);
-        }
-        else if (((getTime() % 20) > 5) && (getTime() % 20) <= 7.5)
-        {
-            getPlayer()->setFrame(2);
-        }
-        else if (((getTime() % 20) > 7.5) && (getTime() % 20) <= 10)
-        {
-            getPlayer()->setFrame(3);
-        }
-        else if (((getTime() % 20) > 10) && (getTime() % 20) <= 13.5)
-        {
-            getPlayer()->setFrame(4);
-        }
-        else if (((getTime() % 20) > 13.5) && (getTime() % 20) <= 15)
-        {
-            getPlayer()->setFrame(5);
-        }
-        else if (((getTime() % 20) > 15) && (getTime() % 20) <= 17.5)
-        {
-            getPlayer()->setFrame(6);
-        }
-        else
-        {
-            getPlayer()->setFrame(7);
-        }
-    }
+    getPlayer()->animation(getTime() % 20);
 
 
     getShot()->applyGravity();

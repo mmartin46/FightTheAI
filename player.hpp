@@ -41,6 +41,7 @@ class Player : public Entity
         void rightMovement(int dist);
         void downMovement();
         void upMovement(int dist);
+        void animation(int time);
 
         inline virtual void slowMovement() { dx *= 0.8; }
         inline virtual void stopMovement() { dx = 0; }
@@ -61,6 +62,46 @@ class Player : public Entity
         inline virtual void setSlowingDown(bool s) { slowingDown = s; }
 
 };  
+
+
+void Player::animation(int time)
+{
+    if ((time % 20) < 20)
+    {
+        if ((time % 20) <= 3.5)
+        {
+            getPlayer()->setFrame(0);
+        }
+        else if (((time % 20) > 3.5) && (time % 20) <= 5)
+        {
+            getPlayer()->setFrame(1);
+        }
+        else if (((time % 20) > 5) && (time % 20) <= 7.5)
+        {
+            getPlayer()->setFrame(2);
+        }
+        else if (((time % 20) > 7.5) && (time % 20) <= 10)
+        {
+            getPlayer()->setFrame(3);
+        }
+        else if (((time % 20) > 10) && (time % 20) <= 13.5)
+        {
+            getPlayer()->setFrame(4);
+        }
+        else if (((time % 20) > 13.5) && (time % 20) <= 15)
+        {
+            getPlayer()->setFrame(5);
+        }
+        else if (((time % 20) > 15) && (time % 20) <= 17.5)
+        {
+            getPlayer()->setFrame(6);
+        }
+        else
+        {
+            getPlayer()->setFrame(7);
+        }
+    }
+}
 
 void Player::leftMovement(int dist)
 {

@@ -14,8 +14,12 @@ class Game
         Player player;
         Shot shot;
 
+        // Zoom Properties
+        pair<int, int> screenInitSize;
+
         // Game Layers
         Matrix<int> layer1; 
+        
 
         // Game Objects
         Matrix<Entity> blocks;
@@ -46,6 +50,26 @@ class Game
 
         inline void setScrollY(int s) { scroll.second = s; }
         inline int getScrollY() { return scroll.second; }
+
+
+        // Zoom
+        inline void setScreenHeight(int h) { screenInitSize.first = h; }
+        inline int getScreenHeight() { return screenInitSize.first; }
+        inline void setScreenWidth(int w) { screenInitSize.second = w; }
+        inline int getScreenWidth() { return screenInitSize.second; }
+
+        inline void zoomOut() {
+            setScreenHeight(getScreenHeight() - 1);
+            setScreenWidth(getScreenWidth() - 1);
+            SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());
+        }
+
+        inline void zoomIn() {
+            setScreenHeight(getScreenHeight() + 1);
+            setScreenWidth(getScreenWidth() + 1);
+            SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());
+        }
+
 
         // Shot
         inline Shot* getShot() { return &shot; }
@@ -152,7 +176,10 @@ void Game::collisionManager()
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
                 mapCollision(*getPlayer(), this->blocks, row, col, 20, 20);
-                mapCollision(*getShot(), this->blocks, row, col, 5, 5);
+                if (mapCollision(*getShot(), this->blocks, row, col, 5, 5) == 2)
+                {
+                    getShot()->applyJump();
+                }
             }
         }
     }
@@ -163,6 +190,9 @@ Game::Game()
     setTime(0);
     setScrollX(0);
     setScrollY(0);
+
+    setScreenHeight(SCREEN_HEIGHT);
+    setScreenWidth(SCREEN_WIDTH);
 
     getPlayer()->set_x(200);
     getPlayer()->set_y(200);
@@ -367,6 +397,15 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         shotMovement();
     }
 
+    if (state[SDL_SCANCODE_W])
+    {
+        zoomOut();
+    }
+    else if (state[SDL_SCANCODE_S])
+    {
+        zoomIn();
+    }
+
     if (state[SDL_SCANCODE_UP])
     {
         getPlayer()->applyJump();
@@ -383,19 +422,12 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     {
         getPlayer()->downMovement();
     }
+
+
 }
 
 
 void Game::shotMovement()
 {
-    getShot()->setDidShoot();
 
-    getShot()->rightMovement(10);
-
-
-
-    getShot()->set_x(getShot()->get_x() + getShot()->get_dx());
-    getShot()->set_y(getShot()->get_y() + getShot()->get_dy());
-
-    getShot()->applyGravity();
 }

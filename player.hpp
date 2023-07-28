@@ -45,7 +45,9 @@ class Player : public Entity
         inline virtual void slowMovement() { dx *= 0.8; }
         inline virtual void stopMovement() { dx = 0; }
 
-
+        inline int getFrame() { return frame; }
+        inline void setFrame(int f) { frame = f; }
+        inline void incFrame() { ++frame;}
 
         inline virtual void setOnBlock() { onBlock = 1; }
         inline virtual void resetOnBlock() { onBlock = 0; }

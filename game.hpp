@@ -175,11 +175,8 @@ void Game::collisionManager()
         {
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
-                mapCollision(*getPlayer(), this->blocks, row, col, 20, 20);
-                if (mapCollision(*getShot(), this->blocks, row, col, 5, 5) == 2)
-                {
-                    getShot()->applyJump();
-                }
+                mapCollision(*getPlayer(), this->blocks, row, col, 20, 30);
+                mapCollision(*getShot(), this->blocks, row, col, 5, 5);
             }
         }
     }
@@ -249,18 +246,62 @@ void Game::animate()
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
 
-    // Shot Positioning
+    //Shot Positioning
     if (getShot()->getDidShoot() == status::DIDNTSHOOT)
     {
         matchShotPosition(getPlayer());
     }
+    else
+    {
+        getShot()->set_x(getShot()->get_x() + 1);
+        getShot()->set_dx(getShot()->get_dx() + 0.5);
+    }
+
+    if ((getTime() % 20) < 20)
+    {
+        if ((getTime() % 20) <= 3.5)
+        {
+            getPlayer()->setFrame(0);
+        }
+        else if (((getTime() % 20) > 3.5) && (getTime() % 20) <= 5)
+        {
+            getPlayer()->setFrame(1);
+        }
+        else if (((getTime() % 20) > 5) && (getTime() % 20) <= 7.5)
+        {
+            getPlayer()->setFrame(2);
+        }
+        else if (((getTime() % 20) > 7.5) && (getTime() % 20) <= 10)
+        {
+            getPlayer()->setFrame(3);
+        }
+        else if (((getTime() % 20) > 10) && (getTime() % 20) <= 13.5)
+        {
+            getPlayer()->setFrame(4);
+        }
+        else if (((getTime() % 20) > 13.5) && (getTime() % 20) <= 15)
+        {
+            getPlayer()->setFrame(5);
+        }
+        else if (((getTime() % 20) > 15) && (getTime() % 20) <= 17.5)
+        {
+            getPlayer()->setFrame(6);
+        }
+        else
+        {
+            getPlayer()->setFrame(7);
+        }
+    }
+
+
+    getShot()->applyGravity();
 
     // Gravity
     getPlayer()->applyGravity();
 
     // Scrolling
-    this->setScrollX(-getPlayer()->get_x() + SCREEN_WIDTH / 2);
-    this->setScrollY(-getPlayer()->get_y() + SCREEN_HEIGHT / 2);
+    this->setScrollX(-getPlayer()->get_x() + getScreenWidth() / 2);
+    this->setScrollY(-getPlayer()->get_y() + getScreenHeight() / 2);
 
 }
 
@@ -308,7 +349,7 @@ void Game::loadTextures()
     string filePath;
     int idx;
 
-    for (idx = 0; idx < 1; ++idx)
+    for (idx = 0; idx < 8; ++idx)
     {
         filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
         surface = IMG_Load(filePath.c_str());
@@ -429,5 +470,15 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
 
 void Game::shotMovement()
 {
-
+    switch (getShot()->getDidShoot())
+    {
+        case status::DIDSHOOT : {
+            getShot()->resetDidShoot();
+            break;
+        }
+        case status::DIDNTSHOOT : {
+            getShot()->setDidShoot();
+            break;
+        }
+    }
 }

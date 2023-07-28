@@ -18,6 +18,7 @@ class Shot : public Player
         bool landed;
         int animFrame;
         int frame;
+        int timer;
 
         status shotStatus; 
         // Images
@@ -28,11 +29,16 @@ class Shot : public Player
         status getDidShoot() { return shotStatus; }
         inline void resetDidShoot() { shotStatus = status::DIDNTSHOOT; }
         inline void setDidShoot() { shotStatus = status::DIDSHOOT; }
+
+        inline int getTimer() { return timer; }
+        inline void startTimer() { ++timer; }
+        inline void resetTimer() { timer = 0; }
 };
 
 
 Shot::Shot()
 {
+    resetTimer();
     resetDidShoot();
     set_x(0);
     set_y(0);

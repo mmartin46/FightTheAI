@@ -2,6 +2,14 @@
 #include "entity.hpp"
 
 
+
+#define IDLE 0
+#define LEFT 1
+#define RIGHT 2
+#define DOWN 4
+#define UP 8
+
+
 class Player : public Entity
 {
     private:
@@ -22,9 +30,8 @@ class Player : public Entity
         1000 - Up
         */ 
         int keyPressed;
-        inline void resetKeys() { keyPressed = 0; }
+        bool slowingDown, facingLeft, doAttack;
 
-        bool slowingDown, facingLeft;
         // Images
         std::vector<SDL_Texture*> textures;
 
@@ -42,19 +49,23 @@ class Player : public Entity
 
         
         // Movement
+        inline void setDoAttack() { doAttack = true; }
+        inline void resetDoAttack() { doAttack = false; }
+
         inline virtual void applyGravity() { set_dy(get_dy() + 0.5f); } // Accumulates the gravity constant to the player.
         inline virtual void applyJump() { dy -= 0.3f; }
 
-        inline virtual void moveLeft(int v) { set_x(get_x() - v); }
-        inline virtual void moveRight(int v) { set_x(get_x() + v); }
+        inline virtual void moveLeft(int v) { setFacingLeft(true); (get_x() - v); }
+        inline virtual void moveRight(int v) { setFacingLeft(false); set_x(get_x() + v); }
         inline virtual void moveUp(int v) { set_y(get_y() - 1); }
         inline virtual void moveDown(int v) { set_y(get_y() + 1); }
 
-
+        inline void resetKeys() { keyPressed = 0; }
         inline void setMovingLeft() {  resetKeys(); bitset::set_bit(keyPressed, 0); }
         inline void setMovingRight() { resetKeys(); bitset::set_bit(keyPressed, 1); }
         inline void setMovingDown() { resetKeys(); bitset::set_bit(keyPressed, 2); }
         inline void setMovingUp() { resetKeys(); bitset::set_bit(keyPressed, 3); }
+        inline int getKeyPressed() { return keyPressed; }
 
 
 
@@ -132,7 +143,72 @@ void Player::animation(int time)
     }
     else
     {
-        setFrame(0);
+        if (getKeyPressed() == DOWN)
+        {
+            if (time < 20 )
+            {
+                if (time <= 5)
+                {
+                    setFrame(8);
+                }
+
+                else if (inclusive_range(5, 8.5, time))
+                {
+                    setFrame(9);
+                }
+                else if (inclusive_range(8.5, 11.5, time))
+                {
+                    setFrame(10);
+                }
+                else if (inclusive_range(11.5, 14.5, time))
+                {
+                    setFrame(11);
+                }
+                else if (inclusive_range(14.5, 18, time))
+                {
+                    setFrame(12);
+                }
+                else
+                {
+                    setFrame(13);
+                }
+            }            
+        }
+        else if (doAttack == true)
+        {
+            if (time < 20 )
+            {
+                if (time <= 5)
+                {
+                    setFrame(14);
+                }
+
+                else if (inclusive_range(5, 8.5, time))
+                {
+                    setFrame(15);
+                }
+                else if (inclusive_range(8.5, 11.5, time))
+                {
+                    setFrame(16);
+                }
+                else if (inclusive_range(11.5, 14.5, time))
+                {
+                    setFrame(17);
+                }
+                else if (inclusive_range(14.5, 18, time))
+                {
+                    setFrame(18);
+                }
+                else
+                {
+                    setFrame(17);
+                }
+            }   
+        }
+        else
+        {
+            setFrame(0);
+        }
     }
 }
 
@@ -158,7 +234,7 @@ void Player::rightMovement(int dist)
     {
         set_dx(PLAYERSPEEDDX);
     }
-    this->setFacingLeft(true);
+    this->setFacingLeft(false);
     this->setSlowingDown(false);
 }
 

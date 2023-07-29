@@ -233,7 +233,7 @@ void Game::loadWorld()
 // Make the shot position match a specific player
 void Game::matchShotPosition(Player *player)
 {
-    getShot()->set_x(player->get_x() + 5);
+    getShot()->set_x(player->get_x() + 10);
     getShot()->set_y(player->get_y() + 5);
 }
 
@@ -296,12 +296,12 @@ void Game::render()
         }
     }
 
-    rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
-    SDL_RenderCopy(this->getRenderer(), getPlayer()->getTexture(getPlayer()->getFrame()), NULL, &rect);
-
-
     rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
+
+
+    rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
+    SDL_RenderCopyEx(this->getRenderer(), getPlayer()->getTexture(getPlayer()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
 
 
     SDL_RenderPresent(this->getRenderer());
@@ -315,7 +315,7 @@ void Game::loadTextures()
     string filePath;
     int idx;
 
-    for (idx = 0; idx < 14; ++idx)
+    for (idx = 0; idx < 19; ++idx)
     {
         filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
         surface = IMG_Load(filePath.c_str());
@@ -399,11 +399,13 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     }
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
+    // Attacks
     if (state[SDL_SCANCODE_SPACE])
     {
         shotMovement();
     }
 
+    // Camera
     if (state[SDL_SCANCODE_W])
     {
         zoomOut();
@@ -415,18 +417,34 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
 
     if (state[SDL_SCANCODE_UP])
     {
+        getPlayer()->setMovingUp();
         getPlayer()->applyJump();
     }
     if (state[SDL_SCANCODE_LEFT])
     {
+        getPlayer()->setMovingLeft();
         getPlayer()->leftMovement(3);
     }
     else if (state[SDL_SCANCODE_RIGHT])
     {
+        getPlayer()->setMovingRight();
         getPlayer()->rightMovement(3);
+    }
+    else if (state[SDL_SCANCODE_Q])
+    {
+        getPlayer()->setDoAttack();
+    }
+    else if (state[SDL_SCANCODE_DOWN])
+    {
+        getPlayer()->setMovingDown();
     }
     else
     {
+        getPlayer()->resetDoAttack();
+        if (getPlayer()->get_dy() != 0)
+        {
+            getPlayer()->resetKeys();
+        }
         getPlayer()->downMovement();
     }
 

@@ -315,7 +315,7 @@ void Game::loadTextures()
     string filePath;
     int idx;
 
-    for (idx = 0; idx < 8; ++idx)
+    for (idx = 0; idx < 14; ++idx)
     {
         filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
         surface = IMG_Load(filePath.c_str());

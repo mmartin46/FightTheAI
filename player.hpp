@@ -14,6 +14,16 @@ class Player : public Entity
         int animFrame;
         int frame;
 
+        /*
+        0000 - Idle
+        0001 - Left
+        0010 - Right
+        0100 - Down
+        1000 - Up
+        */ 
+        int keyPressed;
+        inline void resetKeys() { keyPressed = 0; }
+
         bool slowingDown, facingLeft;
         // Images
         std::vector<SDL_Texture*> textures;
@@ -27,6 +37,9 @@ class Player : public Entity
         void setTexture(int idx, SDL_Texture *texture);
         inline SDL_Texture* getTexture(int idx) { return textures.at(idx); }
 
+
+
+
         
         // Movement
         inline virtual void applyGravity() { set_dy(get_dy() + 0.5f); } // Accumulates the gravity constant to the player.
@@ -36,6 +49,14 @@ class Player : public Entity
         inline virtual void moveRight(int v) { set_x(get_x() + v); }
         inline virtual void moveUp(int v) { set_y(get_y() - 1); }
         inline virtual void moveDown(int v) { set_y(get_y() + 1); }
+
+
+        inline void setMovingLeft() {  resetKeys(); bitset::set_bit(keyPressed, 0); }
+        inline void setMovingRight() { resetKeys(); bitset::set_bit(keyPressed, 1); }
+        inline void setMovingDown() { resetKeys(); bitset::set_bit(keyPressed, 2); }
+        inline void setMovingUp() { resetKeys(); bitset::set_bit(keyPressed, 3); }
+
+
 
         void leftMovement(int dist);
         void rightMovement(int dist);
@@ -72,7 +93,8 @@ bool inclusive_range(int start, int end, int time)
 void Player::animation(int time)
 {
     time = (time % 20);
-    if (time < 20)
+
+    if (time < 20 && (get_dx() != 0))
     {
         if (time <= 3.5)
         {
@@ -107,6 +129,10 @@ void Player::animation(int time)
         {
             setFrame(7);
         }
+    }
+    else
+    {
+        setFrame(0);
     }
 }
 
@@ -157,6 +183,7 @@ void Player::upMovement(int dist)
 
 Player::Player()
 {
+    keyPressed = 0;
     this->set_x(0);
     this->set_y(0);
     this->set_dx(0);

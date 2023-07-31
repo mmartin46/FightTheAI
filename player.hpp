@@ -95,10 +95,6 @@ class Player : public Entity
 
 };  
 
-bool inclusive_range(int start, int end, int time)
-{
-    return (((time) > start) && ((time) <= end));
-}
 
 
 void Player::animation(int time)

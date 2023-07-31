@@ -65,7 +65,10 @@ namespace bitset
 }
 
 
-
+bool inclusive_range(int start, int end, int time)
+{
+    return (((time) > start) && ((time) <= end));
+}
 
 int collide2d(float x1, float x2, float y1, float y2, float ht1, float wt1, float wt2, float ht2)
 {

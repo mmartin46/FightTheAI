@@ -59,15 +59,21 @@ class Game
         inline int getScreenWidth() { return screenInitSize.second; }
 
         inline void zoomOut() {
-            setScreenHeight(getScreenHeight() - 1);
-            setScreenWidth(getScreenWidth() - 1);
-            SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());
+            if (!((getScreenWidth() <= (SCREEN_WIDTH / 1.2)) && (getScreenHeight() <= (SCREEN_HEIGHT / 1.2))))
+            {
+                setScreenHeight(getScreenHeight() - 1);
+                setScreenWidth(getScreenWidth() - 1);
+                SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());
+            }
         }
 
         inline void zoomIn() {
-            setScreenHeight(getScreenHeight() + 1);
-            setScreenWidth(getScreenWidth() + 1);
-            SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());
+            if (!((getScreenWidth() >= (SCREEN_WIDTH * 1.2)) && (getScreenHeight() >= (SCREEN_HEIGHT * 1.2))))
+            {
+                setScreenHeight(getScreenHeight() + 1);
+                setScreenWidth(getScreenWidth() + 1);
+                SDL_RenderSetLogicalSize(this->getRenderer(), getScreenWidth(), getScreenHeight());   
+            }
         }
 
 
@@ -315,6 +321,7 @@ void Game::loadTextures()
     string filePath;
     int idx;
 
+    // Player files
     for (idx = 0; idx < 19; ++idx)
     {
         filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
@@ -330,7 +337,6 @@ void Game::loadTextures()
             getPlayer()->set_w(getImageDimensions(filePath.c_str()).first);
             getPlayer()->set_h(getImageDimensions(filePath.c_str()).second);
         }
-
         getPlayer()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }

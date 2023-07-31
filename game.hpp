@@ -1,5 +1,6 @@
 #pragma once
 #include "shot.hpp"
+#include "enemy.hpp"
 #include "player.hpp"
 #include "map.cpp"
 
@@ -12,6 +13,7 @@ class Game
         int time;
         SDL_Renderer *renderer;
         Player player;
+        Enemy enemy;
         Shot shot;
 
         // Zoom Properties
@@ -45,11 +47,19 @@ class Game
         inline void setPlayer(const Player &p) { player = p; }
         inline Player* getPlayer() { return &player; };
 
+        inline void setEnemy(const Enemy &e) { enemy = e; }
+        inline Enemy* getEnemy() { return &enemy; }
+
         inline void setScrollX(int s) { scroll.first = s; }
         inline int getScrollX() { return scroll.first; }
 
         inline void setScrollY(int s) { scroll.second = s; }
         inline int getScrollY() { return scroll.second; }
+
+        // Blocks
+
+        inline Matrix<Entity>* getBlocks() { return &blocks; }
+
 
 
         // Zoom
@@ -181,8 +191,8 @@ void Game::collisionManager()
         {
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
-                mapCollision(*getPlayer(), this->blocks, row, col, 20, 30);
-                mapCollision(*getShot(), this->blocks, row, col, 5, 5);
+                mapCollision(*getPlayer(), *this->getBlocks(), row, col, 20, 30);
+                mapCollision(*getShot(), *this->getBlocks(), row, col, 5, 5);
             }
         }
     }
@@ -341,7 +351,26 @@ void Game::loadTextures()
         SDL_FreeSurface(surface);
     }
 
+    for (idx = 0; idx < 19; ++idx)
+    {
+        filePath = "sprites\\enemy\\player" + std::to_string(idx) + ".png";
+        surface = IMG_Load(filePath.c_str());
+        if (surface == NULL)
+        {
+            std::cout << "loadTextures enemy(): No texture for " + filePath << std::endl;
+            SDL_Quit();
+            exit(1);
+        }
+        if (idx == 0)
+        {
+            getEnemy()->set_w(getImageDimensions(filePath.c_str()).first);
+            getEnemy()->set_h(getImageDimensions(filePath.c_str()).second);
+        }
+        getEnemy()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        SDL_FreeSurface(surface);
+    }
 
+    // Blocks
     filePath = "sprites\\platforms\\block.png";
     surface = IMG_Load(filePath.c_str());
     if (surface == NULL)

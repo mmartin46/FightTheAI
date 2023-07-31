@@ -25,4 +25,4 @@ class Enemy : public Player
         std::vector<SDL_Texture*> textures;
     public:
         void movement();
-}
+};

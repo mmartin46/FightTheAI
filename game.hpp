@@ -193,6 +193,7 @@ void Game::collisionManager()
             {
                 mapCollision(*getPlayer(), *this->getBlocks(), row, col, 20, 30);
                 mapCollision(*getShot(), *this->getBlocks(), row, col, 5, 5);
+                mapCollision(*getEnemy(), *this->getBlocks(), row, col, 20, 30);
             }
         }
     }
@@ -285,6 +286,7 @@ void Game::animate()
 
     // Gravity
     getPlayer()->applyGravity();
+    getEnemy()->applyGravity();
 
     // Scrolling
     this->setScrollX(-getPlayer()->get_x() + getScreenWidth() / 2);

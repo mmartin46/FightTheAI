@@ -213,7 +213,7 @@ Game::Game()
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
 
-    getEnemy()->set_x(500);
+    getEnemy()->set_x(200);
     getEnemy()->set_y(200);
     getEnemy()->set_dx(0);
     getEnemy()->set_dy(0);
@@ -267,6 +267,9 @@ void Game::animate()
 
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
+
+    getEnemy()->set_x(getEnemy()->get_x() + getEnemy()->get_dx());
+    getEnemy()->set_y(getEnemy()->get_y() + getEnemy()->get_dy());
 
     //Shot Positioning
     if (getShot()->getDidShoot() == status::DIDNTSHOOT)

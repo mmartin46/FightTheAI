@@ -212,6 +212,11 @@ Game::Game()
     getPlayer()->set_dx(0);
     getPlayer()->set_dy(0);
 
+    getEnemy()->set_x(500);
+    getEnemy()->set_y(200);
+    getEnemy()->set_dx(0);
+    getEnemy()->set_dy(0);
+
 
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
@@ -312,13 +317,17 @@ void Game::render()
         }
     }
 
+    // Shot
     rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
 
-
+    // Player
     rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getPlayer()->getTexture(getPlayer()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
 
+    // Enemy
+    rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
+    SDL_RenderCopy(this->getRenderer(), getEnemy()->getTexture(0), NULL, &rect);
 
     SDL_RenderPresent(this->getRenderer());
 }
@@ -351,6 +360,7 @@ void Game::loadTextures()
         SDL_FreeSurface(surface);
     }
 
+    // Enemy
     for (idx = 0; idx < 19; ++idx)
     {
         filePath = "sprites\\enemy\\player" + std::to_string(idx) + ".png";
@@ -450,6 +460,8 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         zoomIn();
     }
 
+
+
     if (state[SDL_SCANCODE_UP])
     {
         getPlayer()->setMovingUp();
@@ -465,14 +477,6 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         getPlayer()->setMovingRight();
         getPlayer()->rightMovement(3);
     }
-    else if (state[SDL_SCANCODE_Q])
-    {
-        getPlayer()->setDoAttack();
-    }
-    else if (state[SDL_SCANCODE_DOWN])
-    {
-        getPlayer()->setMovingDown();
-    }
     else
     {
         getPlayer()->resetDoAttack();
@@ -482,6 +486,17 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         }
         getPlayer()->downMovement();
     }
+
+    if (state[SDL_SCANCODE_Q])
+    {
+        getPlayer()->setDoAttack();
+    }    
+    
+    if (state[SDL_SCANCODE_DOWN])
+    {
+        getPlayer()->setMovingDown();
+    }
+
 
 
 }

@@ -26,3 +26,4 @@ class Enemy : public Player
     public:
         void movement();
 };
+

@@ -69,49 +69,52 @@ void Enemy::movement()
 
     std::cout << heuristic.first << std::endl;
 
-    switch (hash(heuristic.first.c_str()))
+    if (heuristic.second >= 50)
     {
-        case hash("LEFT") : {
-            setMovingLeft();
-            leftMovement(0.6);
-        }
-        break;
-        case hash("RIGHT") : {
-            setMovingRight();
-            rightMovement(0.6);
-        }
-        break;
-        case hash("DOWN") : {
-            setMovingDown();
-            rightMovement(0.6);
-        }
-        break;
-        case hash("UP") : {
-            setMovingUp();
-            applyJump();
-            upMovement(-10);
-        }
-        break;
-        case hash("UPLEFT") : {
-            upMovement(-10);
-            leftMovement(0.6);
-        }
-        break;
-        case hash("UPRIGHT") : {
-            upMovement(-10);
-            rightMovement(0.6);
-        }
-        break;
-        case hash("DOWNLEFT") : {
-            downMovement();
-            leftMovement(0.6);            
-        }
-        break;
-        case hash("DOWNRIGHT") : {
-            downMovement();
-            rightMovement(0.6);
-        }
-        break;
-    }
 
+        switch (hash(heuristic.first.c_str()))
+        {
+            case hash("LEFT") : {
+                setMovingLeft();
+                leftMovement(0.6);
+            }
+            break;
+            case hash("RIGHT") : {
+                setMovingRight();
+                rightMovement(0.6);
+            }
+            break;
+            case hash("DOWN") : {
+                setMovingDown();
+                rightMovement(0.6);
+            }
+            break;
+            case hash("UP") : {
+                setMovingUp();
+                applyJump();
+                upMovement(-10);
+            }
+            break;
+            case hash("UPLEFT") : {
+                upMovement(-10);
+                leftMovement(0.6);
+            }
+            break;
+            case hash("UPRIGHT") : {
+                upMovement(-10);
+                rightMovement(0.6);
+            }
+            break;
+            case hash("DOWNLEFT") : {
+                downMovement();
+                leftMovement(0.6);            
+            }
+            break;
+            case hash("DOWNRIGHT") : {
+                downMovement();
+                rightMovement(0.6);
+            }
+            break;
+        }
+    }
 }

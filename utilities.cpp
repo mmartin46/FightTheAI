@@ -44,6 +44,27 @@ using std::vector;
 using std::string;
 using std::unordered_map;
 
+
+// Finds the distance between
+// two points.
+typedef struct {
+   int p1_x;
+   int p1_y;
+   int p2_x;
+   int p2_y;
+} Distance;
+
+struct comp
+{
+   template <typename T>
+   bool operator() (const T&lhs, const T&rhs)
+   {
+      return lhs.second < rhs.second;
+   }
+};
+
+
+
 // Utilies bit operations to save of space.
 namespace bitset
 {
@@ -119,6 +140,17 @@ double get_distances(double x_1, double x_2, double y_1, double y_2)
 }
 
 /*
+Utilizes the Manhattan distance to find
+the distance between two positions.
+*/
+double get_distances(Distance *target)
+{
+   double val = abs(target->p1_x - target->p2_x) + abs(target->p1_y - target->p2_y);
+   return val;
+}
+
+
+/*
 Finds the minimum within an unordered map.
 */
 template <class K, class V>
@@ -162,21 +194,3 @@ pair<int, int> getImageDimensions(const char *filePath)
    return dim;
 }
 
-
-// Finds the distance between
-// two points.
-typedef struct {
-   int p1_x;
-   int p1_y;
-   int p2_x;
-   int p2_y;
-} Distance;
-
-struct comp
-{
-   template <typename T>
-   bool operator() (const T&lhs, const T&rhs)
-   {
-      return lhs.second < rhs.second;
-   }
-};

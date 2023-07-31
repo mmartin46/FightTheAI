@@ -11,6 +11,7 @@ class Enemy : public Player
         bool landed;
         int animFrame;
         int frame;
+        Distance target;
         /*
         0000 - Idle
         0001 - Left
@@ -24,6 +25,24 @@ class Enemy : public Player
         // Images
         std::vector<SDL_Texture*> textures;
     public:
+        template <typename T>
+        void setupTarget(T &plyr);
         void movement();
 };
 
+template <typename T>
+void Enemy::setupTarget(T &plyr)
+{
+    target.p1_x = plyr.get_x();
+    target.p1_y = plyr.get_y();
+    target.p2_x = get_x();
+    target.p2_y = get_y();
+
+}
+
+void Enemy::movement()
+{
+    double heuristic = get_distances(&target);
+
+
+}

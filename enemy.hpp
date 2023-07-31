@@ -11,6 +11,9 @@ class Enemy : public Player
         bool landed;
         int animFrame;
         int frame;
+
+        bool functionality = 1;
+
         Distance target;
         std::unordered_map<std::string, double> states;
         /*
@@ -29,6 +32,10 @@ class Enemy : public Player
         template <typename T>
         void setupTarget(T &plyr);
         void movement();
+
+        inline void setFunctionalityOn() { functionality = 1; }
+        inline void setFunctionalityOff() { functionality = 0; }
+        inline int getFunctionality() { return functionality; }
 };
 
 template <typename T>
@@ -69,7 +76,8 @@ void Enemy::movement()
 
     std::cout << heuristic.first << std::endl;
 
-    if (heuristic.second >= 50)
+
+    if (heuristic.second >= 50 && getFunctionality())
     {
 
         switch (hash(heuristic.first.c_str()))
@@ -117,4 +125,5 @@ void Enemy::movement()
             break;
         }
     }
+
 }

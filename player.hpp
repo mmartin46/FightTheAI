@@ -30,6 +30,7 @@ class Player : public Entity
         1000 - Up
         */ 
         int keyPressed;
+        int speedLimit;
         bool slowingDown, facingLeft, doAttack;
 
         // Images
@@ -49,6 +50,9 @@ class Player : public Entity
 
         
         // Movement
+        inline void setSpeedLimit(int s) { speedLimit = s; }
+        inline int  getSpeedLimit() { return speedLimit; }
+
         inline void setDoAttack() { doAttack = true; }
         inline void resetDoAttack() { doAttack = false; }
 
@@ -263,6 +267,7 @@ Player::Player()
     textures = std::vector<SDL_Texture*>(30);
 
     this->resetOnBlock();
+    this->setSpeedLimit(PLAYERSPEED);
     this->setFrame(0);
     this->setFacingLeft(true);
     this->setSlowingDown(false);
@@ -272,6 +277,7 @@ Player::Player(float x, float y)
 {
     this->set_x(x);
     this->set_y(y);
+    this->setSpeedLimit(PLAYERSPEED);
     textures = std::vector<SDL_Texture*>(30);
 }
 

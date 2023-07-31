@@ -27,8 +27,8 @@ using namespace std::chrono;
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
-#define SCREEN_WIDTH 420
-#define SCREEN_HEIGHT 236
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
 
 #define GRAVITY 0.5f
 #define PLAYERSPEED 0.5f

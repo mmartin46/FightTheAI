@@ -14,6 +14,7 @@ class Game
         SDL_Renderer *renderer;
         Player player;
         Enemy enemy;
+        Entity background;
         Shot shot;
 
         // Zoom Properties
@@ -49,6 +50,8 @@ class Game
 
         inline void setEnemy(const Enemy &e) { enemy = e; }
         inline Enemy* getEnemy() { return &enemy; }
+
+        inline Entity* getBackground() { return &background; }
 
         inline void setScrollX(int s) { scroll.first = s; }
         inline int getScrollX() { return scroll.first; }
@@ -218,6 +221,11 @@ Game::Game()
     getEnemy()->set_dx(0);
     getEnemy()->set_dy(0);
 
+    getBackground()->set_x(0);
+    getBackground()->set_y(0);
+    getBackground()->set_w(getImageDimensions("sprites\\background\\bg.jpg").first * 300);
+    getBackground()->set_h(getImageDimensions("sprites\\background\\bg.jpg").second * 300);
+
 
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
@@ -328,6 +336,10 @@ void Game::render()
         }
     }
 
+    // Background
+    rect = { static_cast<int>(getBackground()->get_x()), static_cast<int>(getBackground()->get_y()), getBackground()->get_h(), getBackground()->get_w() };
+    SDL_RenderCopy(this->getRenderer(), getBackground()->getTexture(0), NULL, &rect);
+
     // Shot
     rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
@@ -390,6 +402,17 @@ void Game::loadTextures()
         getEnemy()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }
+
+    filePath = "sprites\\background\\bg.jpg";
+    surface = IMG_Load(filePath.c_str());
+    if (surface == NULL)
+    {
+        std::cout << "loadTextures background(): No texture for " + filePath << std::endl;
+        SDL_Quit();
+        exit(1);        
+    }
+    getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+    SDL_FreeSurface(surface);
 
     // Blocks
     filePath = "sprites\\platforms\\block.png";
@@ -510,15 +533,16 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
                     getEnemy()->get_w(),
                     getEnemy()->get_h()))
         {
+            getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
             {
-                getEnemy()->set_dx(-10);
-                getEnemy()->set_dy(-10);
+                getEnemy()->set_dx(-8);
+                getEnemy()->set_dy(-6);
             }
             else
             {
-                getEnemy()->set_dx(10);
-                getEnemy()->set_dy(-10);                
+                getEnemy()->set_dx(8);
+                getEnemy()->set_dy(-6);                
             }
         }
     }    
@@ -535,22 +559,25 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
                     getEnemy()->get_w(),
                     getEnemy()->get_h()))
         {
-            SDL_Delay(20);
+            getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
             {
-                getEnemy()->set_dx(-10);
-                getEnemy()->set_dy(-10);
+                getEnemy()->set_dx(-6);
+                getEnemy()->set_dy(-8);
             }
             else
             {
-                getEnemy()->set_dx(10);
-                getEnemy()->set_dy(-10);                
+                getEnemy()->set_dx(6);
+                getEnemy()->set_dy(-8);                
             }
         }    
 
     }
 
-
+    if (((getTime() % 50) == 0) && !getEnemy()->getFunctionality())
+    {
+        getEnemy()->setFunctionalityOn();
+    }
 
 }
 

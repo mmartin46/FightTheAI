@@ -265,6 +265,10 @@ void Game::animate()
     // Timer
     setTime(getTime() + 1);
 
+    // Set Enemy's Target
+    getEnemy()->setupTarget(*getPlayer());
+
+    // Player Movement
     getPlayer()->set_x(getPlayer()->get_x() + getPlayer()->get_dx());
     getPlayer()->set_y(getPlayer()->get_y() + getPlayer()->get_dy());
 
@@ -282,8 +286,10 @@ void Game::animate()
         getShot()->set_dx(getShot()->get_dx() + 0.5);
     }
 
+
     getPlayer()->animation(getTime());
 
+    getEnemy()->movement();
 
     getShot()->applyGravity();
 
@@ -495,11 +501,53 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     if (state[SDL_SCANCODE_Q])
     {
         getPlayer()->setDoAttack();
+        if (collide2d(getPlayer()->get_x(),
+                      getEnemy()->get_x(),
+                    getPlayer()->get_y(),
+                    getEnemy()->get_y(),
+                    getPlayer()->get_h(),
+                    getPlayer()->get_w(),
+                    getEnemy()->get_w(),
+                    getEnemy()->get_h()))
+        {
+            if (getPlayer()->getFacingLeft())
+            {
+                getEnemy()->set_dx(-10);
+                getEnemy()->set_dy(-10);
+            }
+            else
+            {
+                getEnemy()->set_dx(10);
+                getEnemy()->set_dy(-10);                
+            }
+        }
     }    
     
     if (state[SDL_SCANCODE_DOWN])
     {
         getPlayer()->setMovingDown();
+        if (collide2d(getPlayer()->get_x(),
+                      getEnemy()->get_x(),
+                    getPlayer()->get_y(),
+                    getEnemy()->get_y(),
+                    getPlayer()->get_h(),
+                    getPlayer()->get_w(),
+                    getEnemy()->get_w(),
+                    getEnemy()->get_h()))
+        {
+            SDL_Delay(20);
+            if (getPlayer()->getFacingLeft())
+            {
+                getEnemy()->set_dx(-10);
+                getEnemy()->set_dy(-10);
+            }
+            else
+            {
+                getEnemy()->set_dx(10);
+                getEnemy()->set_dy(-10);                
+            }
+        }    
+
     }
 
 

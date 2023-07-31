@@ -69,10 +69,10 @@ class Player : public Entity
 
 
 
-        void leftMovement(int dist);
-        void rightMovement(int dist);
+        void leftMovement(float dist);
+        void rightMovement(float dist);
         void downMovement();
-        void upMovement(int dist);
+        void upMovement(float dist);
         void animation(int time);
 
         inline virtual void slowMovement() { dx *= 0.8; }
@@ -208,7 +208,7 @@ void Player::animation(int time)
     }
 }
 
-void Player::leftMovement(int dist)
+void Player::leftMovement(float dist)
 {
     set_dx(get_dx() + -PLAYERSPEED);
     if (get_dx() < -dist)
@@ -223,7 +223,7 @@ void Player::leftMovement(int dist)
 // If the player dx is less than
 // the "dist" variable increase
 // dx by the PLAYERSPEED macro
-void Player::rightMovement(int dist)
+void Player::rightMovement(float dist)
 {
     set_dx(get_dx() + PLAYERSPEED);
     if (get_dx() > dist)
@@ -244,7 +244,7 @@ void Player::downMovement()
     }
 }
 
-void Player::upMovement(int dist)
+void Player::upMovement(float dist)
 {
     if (getOnBlock())
     {

@@ -7,6 +7,9 @@
 #define BLOCK_WIDTH 20
 #define BLOCK_HEIGHT 20
 
+
+
+
 class Game
 {
     private:
@@ -17,11 +20,17 @@ class Game
         Entity background;
         Shot shot;
 
+        // Smoke
+        Entity smoke;
+
         // Zoom Properties
         pair<int, int> screenInitSize;
 
         // Game Layers
         Matrix<int> layer1; 
+
+        // Collision Trackers
+        CollisionStruct *playerEnemyCollision;
         
 
         // Game Objects
@@ -50,6 +59,8 @@ class Game
 
         inline void setEnemy(const Enemy &e) { enemy = e; }
         inline Enemy* getEnemy() { return &enemy; }
+
+        inline Entity* getSmoke() { return &smoke; }
 
         inline Entity* getBackground() { return &background; }
 
@@ -104,6 +115,7 @@ class Game
 
         template <typename T>
         int mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PLAYER_WIDTH, int PLAYER_HEIGHT);
+        void enemyPlayerCollision(const Uint8 *state);
 
         // Textures
 
@@ -223,8 +235,8 @@ Game::Game()
 
     getBackground()->set_x(0);
     getBackground()->set_y(0);
-    getBackground()->set_w(getImageDimensions("sprites\\background\\bg.jpg").first * 300);
-    getBackground()->set_h(getImageDimensions("sprites\\background\\bg.jpg").second * 300);
+    getBackground()->set_w(420);
+    getBackground()->set_h(240);
 
 
     layer1 = Matrix<int>(100, vector<int>(100));
@@ -315,11 +327,12 @@ void Game::render()
 {
     SDL_SetRenderDrawColor(this->getRenderer(), 120, 120, 120, 255);
     SDL_RenderClear(this->getRenderer());
-
-
-
-
     SDL_Rect rect;
+
+    // Background
+    rect = { static_cast<int>((this->getScrollX() / 200) + getBackground()->get_x()), static_cast<int>((this->getScrollY() / 20) + getBackground()->get_y()), getBackground()->get_w(), getBackground()->get_h() };
+    SDL_RenderCopy(this->getRenderer(), getBackground()->getTexture(0), NULL, &rect);
+
 
     int x, y;
     for (x = 0; x < 100; ++x)
@@ -336,10 +349,6 @@ void Game::render()
         }
     }
 
-    // Background
-    rect = { static_cast<int>(getBackground()->get_x()), static_cast<int>(getBackground()->get_y()), getBackground()->get_h(), getBackground()->get_w() };
-    SDL_RenderCopy(this->getRenderer(), getBackground()->getTexture(0), NULL, &rect);
-
     // Shot
     rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
@@ -351,6 +360,17 @@ void Game::render()
     // Enemy
     rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getEnemy()->getTexture(0), NULL, &rect);
+
+    playerEnemyCollision->x1 = player.get_x();
+    playerEnemyCollision->y1 = player.get_y();
+    playerEnemyCollision->wt1 = player.get_w();
+    playerEnemyCollision->ht1 = player.get_h(); 
+
+    playerEnemyCollision->x2 = enemy.get_x();
+    playerEnemyCollision->y2 = enemy.get_y();
+    playerEnemyCollision->wt2 = enemy.get_w();
+    playerEnemyCollision->ht2 = enemy.get_h(); 
+
 
     SDL_RenderPresent(this->getRenderer());
 }
@@ -403,6 +423,7 @@ void Game::loadTextures()
         SDL_FreeSurface(surface);
     }
 
+    // Background
     filePath = "sprites\\background\\bg.jpg";
     surface = IMG_Load(filePath.c_str());
     if (surface == NULL)
@@ -413,6 +434,21 @@ void Game::loadTextures()
     }
     getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
+
+    
+    for (idx = 1; idx <= 5; ++idx)
+    {
+        filePath = "sprites\\attacked\\smoke" + std::to_string(idx) + ".png";
+        surface = IMG_Load(filePath.c_str());
+        if (surface == NULL)
+        {
+            std::cout << "loadTextures smoke(): No texture for " + filePath << std::endl;
+            SDL_Quit();
+            exit(1);
+        }
+        getSmoke()->setTexture((idx-1), SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        SDL_FreeSurface(surface);
+   }
 
     // Blocks
     filePath = "sprites\\platforms\\block.png";
@@ -521,17 +557,15 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
         getPlayer()->downMovement();
     }
 
+    enemyPlayerCollision(state);
+}
+
+void Game::enemyPlayerCollision(const Uint8* state)
+{
     if (state[SDL_SCANCODE_Q])
     {
         getPlayer()->setDoAttack();
-        if (collide2d(getPlayer()->get_x(),
-                      getEnemy()->get_x(),
-                    getPlayer()->get_y(),
-                    getEnemy()->get_y(),
-                    getPlayer()->get_h(),
-                    getPlayer()->get_w(),
-                    getEnemy()->get_w(),
-                    getEnemy()->get_h()))
+        if (collide2d(playerEnemyCollision))
         {
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
@@ -550,14 +584,7 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     if (state[SDL_SCANCODE_DOWN])
     {
         getPlayer()->setMovingDown();
-        if (collide2d(getPlayer()->get_x(),
-                      getEnemy()->get_x(),
-                    getPlayer()->get_y(),
-                    getEnemy()->get_y(),
-                    getPlayer()->get_h(),
-                    getPlayer()->get_w(),
-                    getEnemy()->get_w(),
-                    getEnemy()->get_h()))
+        if (collide2d(playerEnemyCollision))
         {
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
@@ -578,7 +605,6 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     {
         getEnemy()->setFunctionalityOn();
     }
-
 }
 
 

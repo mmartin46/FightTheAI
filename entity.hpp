@@ -42,7 +42,7 @@ Entity::Entity()
 {
     this->set_x(0);
     this->set_y(0);
-    textures = std::vector<SDL_Texture*>(1);
+    textures = std::vector<SDL_Texture*>(10);
     this->setFrame(0);    
 }
 
@@ -60,7 +60,7 @@ void Entity::setTexture(int idx, SDL_Texture *texture)
     // If the index out of range.
     if (idx >= textures.size() || idx < 0)
     {
-        std::cout << "setPlayerTexture(): Invalid Index\n";
+        std::cout << "setTexture(): Invalid Index\n";
         SDL_Quit();
         exit(1);
     }

@@ -16,7 +16,11 @@ class Game
         Player player;
         Enemy enemy;
         Entity background;
+
+        Entity gameStatsBar;
+
         Shot shot;
+        TTF_Font *font;
 
         // Smoke
         Entity smoke;
@@ -50,6 +54,17 @@ class Game
         void collisionManager();
         void eventHandler(SDL_Window *window, SDL_Event &event, int &done);
         
+        // Game
+
+        void initGameStatsBar();
+        void renderGameStatsBar(SDL_Rect &rect);
+
+        // Font
+        inline void setFont(TTF_Font *font) { this->font = font; }
+        inline TTF_Font* getFont() { return font; }
+
+
+
         // Player
 
         inline void setPlayer(const Player &p) { player = p; }

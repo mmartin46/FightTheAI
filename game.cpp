@@ -258,6 +258,16 @@ void Game::loadTextures()
     string filePath;
     int idx;
 
+
+    // Font
+    setFont(TTF_OpenFont("sprites\\fonts\\font.ttf", 10));
+    if (getFont() == nullptr)
+    {
+        std::cout << "loader font(): Can't find font";
+        SDL_Quit();
+        exit(1);
+    }
+
     // Player files
     for (idx = 0; idx < 19; ++idx)
     {
@@ -433,6 +443,25 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     }
 
     enemyPlayerCollision(state);
+}
+
+void Game::initGameStatsBar()
+{
+   char str[200] = "";
+   sprintf(str, "Player 1:           Time: %u             ", (time));
+
+   SDL_Color white = { 255, 255, 255, 255 };
+   SDL_Surface *tmp = TTF_RenderText_Blended(this->getFont(), str, white);
+   gameStatsBar.set_w(tmp->w);
+   gameStatsBar.set_h(tmp->h);
+   gameStatsBar.setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), tmp));
+   SDL_FreeSurface(tmp);
+}
+
+void Game::renderGameStatsBar(SDL_Rect &rect)
+{
+    rect = { 0, 0, gameStatsBar.get_w(), gameStatsBar.get_h() };
+    SDL_RenderCopy(this->getRenderer(), gameStatsBar.getTexture(0), NULL, &rect);
 }
 
 void Game::enemyPlayerCollision(const Uint8* state)

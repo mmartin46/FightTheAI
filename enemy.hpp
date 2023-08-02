@@ -39,6 +39,7 @@ class Enemy : public Player
         inline int getFunctionality() { return functionality; }
 
         void usePunchAttack(const CollisionStruct &collision, Player *plyr);
+        void useSpinAttack(const CollisionStruct &collision, Player *plyr);
 };
 
 
@@ -63,10 +64,10 @@ void Enemy::setupTarget(T &plyr)
 
 void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
 {
-    if ( ((collision.x1 - collision.x2) <= 5) &&
-         ((collision.y1 - collision.y2) <= 5) )
+    if ( (abs(collision.x1 - collision.x2) <= 10) &&
+         (abs(collision.y1 - collision.y2) <= 10) )
     {
-        setDoAttack();
+        setDoAttack_0();
         if (getFacingLeft())
         {
             plyr->set_dx(-8);
@@ -78,8 +79,27 @@ void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
             plyr->set_dy(-6);                
         }     
     }   
-    
 }
+
+void Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
+{
+
+        if (getFrame() >= 8 && getFrame() <= 13)
+        {
+            setDoAttack_1();
+            if (getFacingLeft())
+            {
+                plyr->set_dx(-6);
+                plyr->set_dy(-8);
+            }
+            else
+            {
+                plyr->set_dx(6);
+                plyr->set_dy(-8);                
+            }     
+        } 
+}
+
 
 constexpr unsigned int hash(const char *s, int off = 0)
 {
@@ -107,7 +127,6 @@ void Enemy::movement()
     states["DOWNLEFT"] = get_distances(target.p1_x + 10, target.p2_x, target.p1_y - 10, target.p2_y);
     std::pair<std::string, double> heuristic = *std::min_element(states.begin(), states.end(), comp());
 
-    std::cout << heuristic.first << std::endl;
 
 
     if (heuristic.second >= 20 && getFunctionality())

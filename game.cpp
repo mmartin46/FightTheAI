@@ -177,8 +177,11 @@ void Game::animate()
 
     getPlayer()->animation(getTime());
 
+    // Enemy Attacks
     getEnemy()->movement();
     getEnemy()->usePunchAttack(*playerEnemyCollision, getPlayer());
+    getEnemy()->useSpinAttack(*playerEnemyCollision, getPlayer());
+
     getEnemy()->animation(getTime());
 
 
@@ -421,7 +424,7 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     }
     else
     {
-        getPlayer()->resetDoAttack();
+        getPlayer()->resetDoAttack_1();
         if (getPlayer()->get_dy() != 0)
         {
             getPlayer()->resetKeys();
@@ -436,7 +439,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
 {
     if (state[SDL_SCANCODE_Q])
     {
-        getPlayer()->setDoAttack();
+        getPlayer()->setDoAttack_0();
         if (collide2d(playerEnemyCollision))
         {
             getEnemy()->setFunctionalityOff();

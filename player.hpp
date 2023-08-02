@@ -31,7 +31,7 @@ class Player : public Entity
         */ 
         int keyPressed;
         int speedLimit;
-        bool slowingDown, facingLeft, doAttack;
+        bool slowingDown, facingLeft, doAttack_0, doAttack_1;
 
         // Images
         std::vector<SDL_Texture*> textures;
@@ -53,8 +53,11 @@ class Player : public Entity
         inline void setSpeedLimit(int s) { speedLimit = s; }
         inline int  getSpeedLimit() { return speedLimit; }
 
-        inline void setDoAttack() { doAttack = true; }
-        inline void resetDoAttack() { doAttack = false; }
+        inline void setDoAttack_0() { doAttack_0 = true; }
+        inline void resetDoAttack_0() { doAttack_0 = false; }
+
+        inline void setDoAttack_1() { doAttack_1 = true; }
+        inline void resetDoAttack_1() { doAttack_1 = false; }
 
         inline virtual void applyGravity() { set_dy(get_dy() + 0.5f); } // Accumulates the gravity constant to the player.
         inline virtual void applyJump() { dy -= 0.3f; }
@@ -174,7 +177,7 @@ void Player::animation(int time)
                 }
             }            
         }
-        else if (doAttack == true)
+        else if (doAttack_0 == true)
         {
             if (time < 20 )
             {

@@ -24,8 +24,8 @@
 using std::unordered_map;
 using namespace std::chrono;
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 421
+#define WINDOW_HEIGHT 237
 
 #define SCREEN_WIDTH 420
 #define SCREEN_HEIGHT 236

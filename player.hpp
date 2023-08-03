@@ -22,6 +22,8 @@ class Player : public Entity
         int animFrame;
         int frame;
 
+        float damage;
+
         /*
         0000 - Idle
         0001 - Left
@@ -58,6 +60,10 @@ class Player : public Entity
 
         inline void setDoAttack_1() { doAttack_1 = true; }
         inline void resetDoAttack_1() { doAttack_1 = false; }
+
+        inline int getDamage() { return damage; }
+        inline void setDamage(float d) { damage = d; }
+        inline void incDamage() { damage += 0.2; }
 
         inline virtual void applyGravity() { set_dy(get_dy() + 0.5f); } // Accumulates the gravity constant to the player.
         inline virtual void applyJump() { dy -= 0.3f; }
@@ -262,6 +268,7 @@ void Player::upMovement(float dist)
 
 Player::Player()
 {
+    setDamage(1);
     keyPressed = 0;
     this->set_x(0);
     this->set_y(0);

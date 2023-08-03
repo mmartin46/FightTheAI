@@ -67,16 +67,17 @@ void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
     if ( (abs(collision.x1 - collision.x2) <= 10) &&
          (abs(collision.y1 - collision.y2) <= 10) )
     {
+        plyr->incDamage();
         setDoAttack_0();
         if (getFacingLeft())
         {
-            plyr->set_dx(-8);
-            plyr->set_dy(-6);
+            plyr->set_dx(-8 * getDamage());
+            plyr->set_dy(-6 * getDamage());
         }
         else
         {
-            plyr->set_dx(8);
-            plyr->set_dy(-6);                
+            plyr->set_dx(8 * getDamage());
+            plyr->set_dy(-6 * getDamage());                
         }     
     }   
 }
@@ -86,16 +87,20 @@ void Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
 
         if (getFrame() >= 8 && getFrame() <= 13)
         {
+            if (collide2d(&collision)) 
+            {
+                plyr->incDamage();
+            }
             setDoAttack_1();
             if (getFacingLeft())
             {
-                plyr->set_dx(-6);
-                plyr->set_dy(-8);
+                plyr->set_dx(-6 * plyr->getDamage());
+                plyr->set_dy(-8 * plyr->getDamage());
             }
             else
             {
-                plyr->set_dx(6);
-                plyr->set_dy(-8);                
+                plyr->set_dx(6 * plyr->getDamage());
+                plyr->set_dy(-8 * plyr->getDamage());                
             }     
         } 
 }

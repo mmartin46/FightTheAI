@@ -196,6 +196,8 @@ void Game::animate()
     this->setScrollX(-getPlayer()->get_x() + getScreenWidth() / 2);
     this->setScrollY(-getPlayer()->get_y() + getScreenHeight() / 2);
 
+    renderGameStatsBar(rect);
+    
 }
 
 void Game::render()
@@ -236,7 +238,7 @@ void Game::render()
     rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getEnemy()->getTexture(getEnemy()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
-    renderGameStatsBar(rect);
+
 
     playerEnemyCollision->x1 = player.get_x();
     playerEnemyCollision->y1 = player.get_y();

@@ -47,6 +47,7 @@ class Enemy : public Player
 
 Enemy::Enemy()
 {
+    setDamage(0);
     functionality = 1;
     frame = 1;
     setFacingLeft(false);

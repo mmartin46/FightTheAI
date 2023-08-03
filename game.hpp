@@ -59,6 +59,9 @@ class Game
         void initGameStatsBar();
         void renderGameStatsBar(SDL_Rect &rect);
 
+        template <typename T>
+        void makeSmokeRect(SDL_Rect rect, T *plyr);
+
         // Font
         inline void setFont(TTF_Font *font) { this->font = font; }
         inline TTF_Font* getFont() { return font; }

@@ -199,6 +199,13 @@ void Game::animate()
 
 }
 
+template <typename T>
+void Game::makeSmokeRect(SDL_Rect rect, T *plyr) 
+{
+    rect = { static_cast<int>(getScrollX() + plyr->get_x()), static_cast<int>(getScrollY() + plyr->get_y()), plyr->get_h(), plyr->get_w() };
+    SDL_RenderCopyEx(this->getRenderer(), getSmoke()->getTexture(getSmoke()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(plyr->getFacingLeft() == true));
+}
+
 void Game::render()
 {
     SDL_SetRenderDrawColor(this->getRenderer(), 120, 120, 120, 255);
@@ -264,7 +271,7 @@ void Game::loadTextures()
 
 
     // Font
-    setFont(TTF_OpenFont("sprites\\fonts\\font.ttf", 10));
+    setFont(TTF_OpenFont("sprites\\fonts\\font.ttf", 14));
     if (getFont() == nullptr)
     {
         std::cout << "loader font(): Can't find font";
@@ -453,7 +460,7 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
 void Game::initGameStatsBar()
 {
    char str[200] = "";
-   sprintf(str, "Player 1:      %d%     Player 2:       %d%        Time: %u             ", (int)(getPlayer()->getDamage() * 10), (int)(getEnemy()->getDamage() * 10), (this->getTime()));
+   sprintf(str, "Player 1: %d%     Player 2: %d%        Time: %u             ", (int)(getPlayer()->getDamage() * 10), (int)(getEnemy()->getDamage() * 10), (this->getTime()));
 
    SDL_Color white = { 255, 255, 255, 255 };
    SDL_Surface *tmp = TTF_RenderText_Blended(this->getFont(), str, white);

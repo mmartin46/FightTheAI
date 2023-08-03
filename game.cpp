@@ -236,6 +236,8 @@ void Game::render()
     rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getEnemy()->getTexture(getEnemy()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
+    renderGameStatsBar(rect);
+
     playerEnemyCollision->x1 = player.get_x();
     playerEnemyCollision->y1 = player.get_y();
     playerEnemyCollision->wt1 = player.get_w();
@@ -358,6 +360,7 @@ void Game::loadTextures()
     setShotTexture(SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
 
+    initGameStatsBar();
 }
 
 void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)

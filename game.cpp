@@ -438,6 +438,7 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
     }
     else
     {
+        getPlayer()->resetDoAttack_0();
         getPlayer()->resetDoAttack_1();
         if (getPlayer()->get_dy() != 0)
         {
@@ -452,7 +453,7 @@ void Game::eventHandler(SDL_Window *window, SDL_Event &event, int &done)
 void Game::initGameStatsBar()
 {
    char str[200] = "";
-   sprintf(str, "Player 1:      %f,     Time: %u             ", getPlayer()->getDamage(), (this->getTime()));
+   sprintf(str, "Player 1:      %d%     Player 2:       %d%        Time: %u             ", (int)(getPlayer()->getDamage() * 10), (int)(getEnemy()->getDamage() * 10), (this->getTime()));
 
    SDL_Color white = { 255, 255, 255, 255 };
    SDL_Surface *tmp = TTF_RenderText_Blended(this->getFont(), str, white);
@@ -479,13 +480,13 @@ void Game::enemyPlayerCollision(const Uint8* state)
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
             {
-                getEnemy()->set_dx(-8 * getEnemy()->getDamage());
-                getEnemy()->set_dy(-6 * getEnemy()->getDamage());
+                getEnemy()->set_dx(-3 * getEnemy()->getDamage());
+                getEnemy()->set_dy(-2 * getEnemy()->getDamage());
             }
             else
             {
-                getEnemy()->set_dx(8 * getEnemy()->getDamage());
-                getEnemy()->set_dy(-6 * getEnemy()->getDamage());                
+                getEnemy()->set_dx(3 * getEnemy()->getDamage());
+                getEnemy()->set_dy(-2 * getEnemy()->getDamage());                
             }
         }
     }    
@@ -499,13 +500,13 @@ void Game::enemyPlayerCollision(const Uint8* state)
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
             {
-                getEnemy()->set_dx(-6 * getEnemy()->getDamage());
-                getEnemy()->set_dy(-8 * getEnemy()->getDamage());
+                getEnemy()->set_dx(-2 * getEnemy()->getDamage());
+                getEnemy()->set_dy(-3 * getEnemy()->getDamage());
             }
             else
             {
-                getEnemy()->set_dx(6 * getEnemy()->getDamage());
-                getEnemy()->set_dy(-8 * getEnemy()->getDamage());                
+                getEnemy()->set_dx(2 * getEnemy()->getDamage());
+                getEnemy()->set_dy(-3 * getEnemy()->getDamage());                
             }
         }    
 

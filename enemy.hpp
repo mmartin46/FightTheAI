@@ -71,13 +71,13 @@ void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
         setDoAttack_0();
         if (getFacingLeft())
         {
-            plyr->set_dx(-8 * getDamage());
-            plyr->set_dy(-6 * getDamage());
+            plyr->set_dx(-1.3 * getDamage());
+            plyr->set_dy(-1.2 * getDamage());
         }
         else
         {
-            plyr->set_dx(8 * getDamage());
-            plyr->set_dy(-6 * getDamage());                
+            plyr->set_dx(1.3 * getDamage());
+            plyr->set_dy(-1.2 * getDamage());                
         }     
     }   
 }
@@ -87,21 +87,23 @@ void Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
 
         if (getFrame() >= 8 && getFrame() <= 13)
         {
-            if (collide2d(&collision)) 
+            if ( (abs(collision.x1 - collision.x2) <= 10) &&
+                (abs(collision.y1 - collision.y2) <= 10) )
             {
                 plyr->incDamage();
-            }
-            setDoAttack_1();
-            if (getFacingLeft())
-            {
-                plyr->set_dx(-6 * plyr->getDamage());
-                plyr->set_dy(-8 * plyr->getDamage());
-            }
-            else
-            {
-                plyr->set_dx(6 * plyr->getDamage());
-                plyr->set_dy(-8 * plyr->getDamage());                
-            }     
+            
+                setDoAttack_1();
+                if (getFacingLeft())
+                {
+                    plyr->set_dx(-1.2 * plyr->getDamage());
+                    plyr->set_dy(-1.3 * plyr->getDamage());
+                }
+                else
+                {
+                    plyr->set_dx(1.2 * plyr->getDamage());
+                    plyr->set_dy(-1.3 * plyr->getDamage());                
+                }    
+            } 
         } 
 }
 
@@ -186,6 +188,8 @@ void Enemy::movement()
     {
         set_dx(0);
         set_dy(0);
+        resetDoAttack_0();
+        resetDoAttack_1();
     }
 
 }

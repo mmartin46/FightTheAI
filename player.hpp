@@ -22,7 +22,7 @@ class Player : public Entity
         int animFrame;
         int frame;
 
-        float damage;
+        double damage;
 
         /*
         0000 - Idle
@@ -61,7 +61,7 @@ class Player : public Entity
         inline void setDoAttack_1() { doAttack_1 = true; }
         inline void resetDoAttack_1() { doAttack_1 = false; }
 
-        inline int getDamage() { return damage; }
+        inline float getDamage() { return damage; }
         inline void setDamage(float d) { damage = d; }
         inline void incDamage() { damage += 0.2; }
 

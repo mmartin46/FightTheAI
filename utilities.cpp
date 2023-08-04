@@ -94,8 +94,6 @@ namespace bitset
    {
       value &= ~(1 << pos);
    }
-
-
 }
 
 
@@ -104,27 +102,30 @@ bool inclusive_range(int start, int end, int time)
     return (((time) > start) && ((time) <= end));
 }
 
-typedef struct {
-   float x1;
-   float x2;
-   float y1;
-   float y2; 
-   float wt1;
-   float wt2;
-   float ht1;
-   float ht2;
-} CollisionStruct;
+namespace collision {
+   
+   typedef struct {
+      float x1;
+      float x2;
+      float y1;
+      float y2; 
+      float wt1;
+      float wt2;
+      float ht1;
+      float ht2;
+   } CollisionStruct;
 
-int collide2d(float x1, float x2, float y1, float y2, float ht1, float wt1, float wt2, float ht2)
-{
-   return (!((x1 > (x2+wt2)) || (x2 > (x1+wt1)) || (y1 > (y2+ht2)) || (y2 > (y1+ht1))));
+   int collide2d(float x1, float x2, float y1, float y2, float ht1, float wt1, float wt2, float ht2)
+   {
+      return (!((x1 > (x2+wt2)) || (x2 > (x1+wt1)) || (y1 > (y2+ht2)) || (y2 > (y1+ht1))));
+   }
+
+   int collide2d(const CollisionStruct *c)
+   {
+      return (!((c->x1 > (c->x2+c->wt2)) || (c->x2 > (c->x1+c->wt1)) || (c->y1 > (c->y2+c->ht2)) || (c->y2 > (c->y1+c->ht1))));
+   }
+
 }
-
-int collide2d(const CollisionStruct *c)
-{
-   return (!((c->x1 > (c->x2+c->wt2)) || (c->x2 > (c->x1+c->wt1)) || (c->y1 > (c->y2+c->ht2)) || (c->y2 > (c->y1+c->ht1))));
-}
-
 bool notMovingHorizontally(const Uint8 *state)
 {
    return (!state[SDL_SCANCODE_LEFT] && !state[SDL_SCANCODE_RIGHT]);

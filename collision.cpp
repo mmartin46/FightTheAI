@@ -88,7 +88,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
     if (state[SDL_SCANCODE_Q])
     {
         getPlayer()->setDoAttack_0();
-        if (collide2d(playerEnemyCollision))
+        if (collision::collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
             allowSmokeAnimation();
@@ -112,7 +112,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
     if (state[SDL_SCANCODE_DOWN])
     {
         getPlayer()->setMovingDown();
-        if (collide2d(playerEnemyCollision))
+        if (collision::collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
             allowSmokeAnimation();

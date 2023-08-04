@@ -279,6 +279,7 @@ void Game::render()
     SDL_RenderCopyEx(this->getRenderer(), getEnemy()->getTexture(getEnemy()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
     renderGameStatsBar(rect);
+    makeSmokeRect(rect, getPlayer());
 
 
     playerEnemyCollision->x1 = player.get_x();

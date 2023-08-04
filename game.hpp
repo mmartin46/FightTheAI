@@ -46,6 +46,7 @@ class Game
         pair<float, float> scroll;
 
         bool smokeAnimationAllow = true;
+        Player *attackedPlayer;
         
     public:
         Game();

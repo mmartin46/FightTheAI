@@ -106,7 +106,7 @@ Game::Game()
     getBackground()->set_w(420);
     getBackground()->set_h(240);
 
-
+    attackedPlayer = getPlayer();
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
 }

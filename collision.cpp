@@ -74,9 +74,9 @@ void Game::collisionManager()
         {
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
-                mapCollision(*getPlayer(), *this->getBlocks(), row, col, 20, 30);
-                mapCollision(*getShot(), *this->getBlocks(), row, col, 5, 5);
-                mapCollision(*getEnemy(), *this->getBlocks(), row, col, 20, 30);
+                mapCollision(*getPlayer(), *this->getBlocks(), row, col, PLAYER_WIDTH, PLAYER_HEIGHT);
+                mapCollision(*getShot(), *this->getBlocks(), row, col, SHOT_WIDTH, SHOT_HEIGHT);
+                mapCollision(*getEnemy(), *this->getBlocks(), row, col, ENEMY_WIDTH, ENEMY_HEIGHT);
             }
         }
     }

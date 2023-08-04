@@ -142,6 +142,7 @@ void Game::loadTextures()
     setBlockTexture(SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
 
+    // Shot
     filePath = "sprites\\shot\\shot.png";
     surface = IMG_Load(filePath.c_str());
     if (surface == NULL)

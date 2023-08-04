@@ -35,6 +35,19 @@ using namespace std::chrono;
 #define PLAYERSPEEDDX 3
 #define PLAYERJUMPHEIGHT -11
 
+#define PLAYER_WIDTH 20
+#define PLAYER_HEIGHT 30
+
+#define ENEMY_WIDTH 20
+#define ENEMY_HEIGHT 30
+
+#define BLOCK_WIDTH 20
+#define BLOCK_HEIGHT 20
+
+#define SHOT_WIDTH 5
+#define SHOT_HEIGHT 5
+
+
 
 template <typename T>
 using Matrix = std::vector<std::vector<T> >;

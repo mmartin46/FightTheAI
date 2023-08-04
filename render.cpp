@@ -72,3 +72,4 @@ void Game::renderGameStatsBar(SDL_Rect &rect)
     rect = { 0, 0, gameStatsBar.get_w(), gameStatsBar.get_h() };
     SDL_RenderCopy(this->getRenderer(), gameStatsBar.getTexture(0), NULL, &rect);
 }
+

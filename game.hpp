@@ -138,7 +138,7 @@ class Game
 
 
         template <typename T>
-        int mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PLAYER_WIDTH, int PLAYER_HEIGHT);
+        int mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int, int );
         void enemyPlayerCollision(const Uint8 *state);
 
         // Textures

@@ -1,10 +1,10 @@
 #include "game.hpp"
 
 template <typename T>
-int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int PLAYER_WIDTH, int PLAYER_HEIGHT)
+int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int player_width, int player_height)
 {
     int touched = 0;
-    float pw = PLAYER_WIDTH, ph = PLAYER_HEIGHT;
+    float pw = player_width, ph = player_height;
     float px = plyr.get_x(), py = plyr.get_y();
     float bx = blocks.at(row).at(col).get_x(), by = blocks.at(row).at(col).get_y(), bw = blocks.at(row).at(col).get_w(), bh = blocks.at(row).at(col).get_h();
 
@@ -74,9 +74,9 @@ void Game::collisionManager()
         {
             if (this->layer1.at(row).at(col) == world::BLOCK)
             {
-                mapCollision(*getPlayer(), *this->getBlocks(), row, col, PLAYER_WIDTH, PLAYER_HEIGHT);
-                mapCollision(*getShot(), *this->getBlocks(), row, col, SHOT_WIDTH, SHOT_HEIGHT);
-                mapCollision(*getEnemy(), *this->getBlocks(), row, col, ENEMY_WIDTH, ENEMY_HEIGHT);
+                mapCollision(*getPlayer(), *this->getBlocks(), row, col, 20, 30);
+                mapCollision(*getShot(), *this->getBlocks(), row, col, 5, 5);
+                mapCollision(*getEnemy(), *this->getBlocks(), row, col, 20, 30);
             }
         }
     }

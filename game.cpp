@@ -32,6 +32,8 @@ Game::Game()
     getSmoke()->setFrame(4);
 
     attackedPlayer = getPlayer();
+    disallowSmokeAnimation();
+
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
 }

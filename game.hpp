@@ -45,7 +45,7 @@ class Game
         // Scrolling
         pair<float, float> scroll;
 
-        bool smokeAnimationAllow = false;
+        bool smokeAnimationAllow;
         Player *attackedPlayer;
         
     public:
@@ -68,7 +68,7 @@ class Game
 
         inline void allowSmokeAnimation() { smokeAnimationAllow = true; }
         inline void disallowSmokeAnimation() { smokeAnimationAllow = false; }
-
+        inline bool getSmokeAnimationState() { return smokeAnimationAllow; }
 
         // Font
         inline void setFont(TTF_Font *font) { this->font = font; }

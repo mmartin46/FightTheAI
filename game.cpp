@@ -180,8 +180,16 @@ void Game::animate()
 
     // Enemy Attacks
     getEnemy()->movement();
-    getEnemy()->usePunchAttack(*playerEnemyCollision, getPlayer());
-    getEnemy()->useSpinAttack(*playerEnemyCollision, getPlayer());
+    
+    
+    if (getEnemy()->usePunchAttack(*playerEnemyCollision, getPlayer()))
+    {
+        attackedPlayer = getPlayer();
+    }
+    if (getEnemy()->useSpinAttack(*playerEnemyCollision, getPlayer()))
+    {
+        attackedPlayer = getPlayer();
+    }
 
     getEnemy()->animation(getTime());
 

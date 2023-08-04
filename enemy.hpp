@@ -1,4 +1,4 @@
-#include "player.hpp"
+bool#include "player.hpp"
 
 class Enemy : public Player
 {
@@ -38,8 +38,8 @@ class Enemy : public Player
         inline void setFunctionalityOff() { functionality = 0; }
         inline int getFunctionality() { return functionality; }
 
-        void usePunchAttack(const CollisionStruct &collision, Player *plyr);
-        void useSpinAttack(const CollisionStruct &collision, Player *plyr);
+        bool usePunchAttack(const CollisionStruct &collision, Player *plyr);
+        bool useSpinAttack(const CollisionStruct &collision, Player *plyr);
 };
 
 
@@ -63,7 +63,7 @@ void Enemy::setupTarget(T &plyr)
 
 }
 
-void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
+bool Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
 {
     if ( (abs(collision.x1 - collision.x2) <= 10) &&
          (abs(collision.y1 - collision.y2) <= 10) )
@@ -79,11 +79,13 @@ void Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
         {
             plyr->set_dx(1.3 * getDamage());
             plyr->set_dy(-1.2 * getDamage());                
-        }     
-    }   
+        }  
+        return true;   
+    }
+    return false;   
 }
 
-void Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
+bool Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
 {
 
         if (getFrame() >= 8 && getFrame() <= 13)
@@ -103,9 +105,11 @@ void Enemy::useSpinAttack(const CollisionStruct &collision, Player *plyr)
                 {
                     plyr->set_dx(1.2 * plyr->getDamage());
                     plyr->set_dy(-1.3 * plyr->getDamage());                
-                }    
+                }
+                return true;    
             } 
-        } 
+        }
+        return false;
 }
 
 

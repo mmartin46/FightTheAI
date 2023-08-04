@@ -279,7 +279,7 @@ void Game::render()
     SDL_RenderCopyEx(this->getRenderer(), getEnemy()->getTexture(getEnemy()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
     renderGameStatsBar(rect);
-    makeSmokeRect(rect, getPlayer());
+    makeSmokeRect(rect, attackedPlayer);
 
 
     playerEnemyCollision->x1 = player.get_x();
@@ -518,6 +518,8 @@ void Game::enemyPlayerCollision(const Uint8* state)
         getPlayer()->setDoAttack_0();
         if (collide2d(playerEnemyCollision))
         {
+            attackedPlayer = getEnemy();
+
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())
@@ -538,6 +540,8 @@ void Game::enemyPlayerCollision(const Uint8* state)
         getPlayer()->setMovingDown();
         if (collide2d(playerEnemyCollision))
         {
+            attackedPlayer = getEnemy();
+
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();
             if (getPlayer()->getFacingLeft())

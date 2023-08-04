@@ -2,7 +2,7 @@
 
 void Game::smokeAnimation()
 {
-    if (smokeAnimationAllow == true)
+    if (getSmokeAnimationState() == true)
     {
         if ((time % 10) < 10)
         {
@@ -21,11 +21,10 @@ void Game::smokeAnimation()
             else if ((time % 10) >= 7.5 && (time % 10) < 10)
             {
                 getSmoke()->setFrame(3);
-                smokeAnimationAllow = false;
             }
             else
             {
-                smokeAnimationAllow = false;
+                disallowSmokeAnimation();
                 getSmoke()->setFrame(4);
             }
         }

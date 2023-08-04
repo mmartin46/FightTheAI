@@ -199,11 +199,45 @@ void Game::animate()
 
 }
 
+
+
+
 template <typename T>
 void Game::makeSmokeRect(SDL_Rect rect, T *plyr) 
 {
     rect = { static_cast<int>(getScrollX() + plyr->get_x()), static_cast<int>(getScrollY() + plyr->get_y()), plyr->get_h(), plyr->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getSmoke()->getTexture(getSmoke()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(plyr->getFacingLeft() == true));
+}
+
+void Game::playSmokeAnimation()
+{
+    if (smokeAnimationAllow == true)
+    {
+        if ((time % 10) < 10)
+        {
+            if ((time % 10) < 3.5)
+            {
+                getSmoke()->setFrame(1);
+            }
+            else if ((time % 10) >= 3.5 && (time % 20) < 5)
+            {
+                getSmoke()->setFrame(2);
+            }
+            else if ((time % 10) >= 5 && (time % 20) < 7.5)
+            {
+                getSmoke()->setFrame(3);
+            }
+            else if ((time % 10) >= 7.5 && (time % 10) < 10)
+            {
+                getSmoke()->setFrame(4);
+                smokeAnimationAllow = false;
+            }
+            else
+            {
+                smokeAnimationAllow = false;
+            }
+        }
+    }
 }
 
 void Game::render()

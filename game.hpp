@@ -44,6 +44,8 @@ class Game
 
         // Scrolling
         pair<float, float> scroll;
+
+        bool smokeAnimationAllow = true;
         
     public:
         Game();
@@ -61,6 +63,7 @@ class Game
 
         template <typename T>
         void makeSmokeRect(SDL_Rect rect, T *plyr);
+        void playSmokeAnimation();
 
         // Font
         inline void setFont(TTF_Font *font) { this->font = font; }

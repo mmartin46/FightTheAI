@@ -1,6 +1,20 @@
 #include "game.hpp"
 
 
+void Game::initGameStatsBar()
+{
+   char str[200] = "";
+   sprintf(str, "Player 1: %d%     Player 2: %d%        Time: %u             ", (int)(getPlayer()->getDamage() * 10), (int)(getEnemy()->getDamage() * 10), (this->getTime()));
+
+   SDL_Color white = { 255, 255, 255, 255 };
+   SDL_Surface *tmp = TTF_RenderText_Blended(this->getFont(), str, white);
+   gameStatsBar.set_w(tmp->w);
+   gameStatsBar.set_h(tmp->h);
+   gameStatsBar.setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), tmp));
+   SDL_FreeSurface(tmp);
+}
+
+
 void Game::loadWorld()
 {
     for (int i = 0; i < layer1.size(); ++i)

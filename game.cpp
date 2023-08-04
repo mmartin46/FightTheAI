@@ -106,6 +106,8 @@ Game::Game()
     getBackground()->set_w(420);
     getBackground()->set_h(240);
 
+    getSmoke()->setFrame(4);
+
     attackedPlayer = getPlayer();
     layer1 = Matrix<int>(100, vector<int>(100));
     blocks = Matrix<Entity>(100, vector<Entity>(100));
@@ -185,10 +187,14 @@ void Game::animate()
     if (getEnemy()->usePunchAttack(*playerEnemyCollision, getPlayer()))
     {
         attackedPlayer = getPlayer();
+        allowSmokeAnimation();
+        smokeAnimation();
     }
     if (getEnemy()->useSpinAttack(*playerEnemyCollision, getPlayer()))
     {
         attackedPlayer = getPlayer();
+        allowSmokeAnimation();
+        smokeAnimation();
     }
 
     getEnemy()->animation(getTime());
@@ -217,7 +223,7 @@ void Game::makeSmokeRect(SDL_Rect rect, T *plyr)
     SDL_RenderCopyEx(this->getRenderer(), getSmoke()->getTexture(getSmoke()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(plyr->getFacingLeft() == true));
 }
 
-void Game::playSmokeAnimation()
+void Game::smokeAnimation()
 {
     if (smokeAnimationAllow == true)
     {
@@ -225,24 +231,25 @@ void Game::playSmokeAnimation()
         {
             if ((time % 10) < 3.5)
             {
-                getSmoke()->setFrame(1);
+                getSmoke()->setFrame(0);
             }
             else if ((time % 10) >= 3.5 && (time % 20) < 5)
             {
-                getSmoke()->setFrame(2);
+                getSmoke()->setFrame(1);
             }
             else if ((time % 10) >= 5 && (time % 20) < 7.5)
             {
-                getSmoke()->setFrame(3);
+                getSmoke()->setFrame(2);
             }
             else if ((time % 10) >= 7.5 && (time % 10) < 10)
             {
-                getSmoke()->setFrame(4);
+                getSmoke()->setFrame(3);
                 smokeAnimationAllow = false;
             }
             else
             {
                 smokeAnimationAllow = false;
+                getSmoke()->setFrame(4);
             }
         }
     }
@@ -527,6 +534,8 @@ void Game::enemyPlayerCollision(const Uint8* state)
         if (collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
+            allowSmokeAnimation();
+
 
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();
@@ -549,6 +558,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
         if (collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
+            allowSmokeAnimation();
 
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();

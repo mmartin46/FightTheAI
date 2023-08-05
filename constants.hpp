@@ -32,3 +32,12 @@
 #define DOWN 4
 #define UP 8
 
+#ifndef GETFRAME
+    // Gets the frame of an object
+    #define GETFRAME(object) object[object.getFrame()]
+#endif
+
+#ifndef SCROLLABLE
+    #define SCROLLABLE(object, scroll, z) \
+    static_cast<int>(scroll + object->z) 
+#endif

@@ -1,10 +1,12 @@
 #pragma once
 #include "shot.hpp"
 
-#include "enemy.hpp"
 
-#include "player.hpp"
+#include "enemy.hpp"
+#include "enemy.cpp"
+
 #include "player.cpp"
+
 
 
 #include "map.cpp"

@@ -98,8 +98,13 @@ class Player : public Entity
         inline virtual bool getSlowingDown() { return slowingDown; } const
         inline virtual void setSlowingDown(bool s) { slowingDown = s; }
 
+        SDL_Texture* operator[](int idx);
 };  
 
+SDL_Texture* Player::operator[](int idx)
+{
+    return textures.at(idx);
+}
 
 
 void Player::animation(int time)

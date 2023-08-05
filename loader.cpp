@@ -170,3 +170,4 @@ void Game::loadTextures()
     SDL_FreeSurface(surface);
 
 }
+

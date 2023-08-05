@@ -35,6 +35,7 @@ class Entity
 
         inline virtual void setFrame(int f) { frame = f; }
         inline virtual int getFrame() { return frame; }
+
 };
 
 
@@ -67,4 +68,6 @@ void Entity::setTexture(int idx, SDL_Texture *texture)
     // Set the texture
     textures.at(idx) = texture;
 }
+
+
 

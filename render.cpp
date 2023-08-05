@@ -15,9 +15,9 @@ void Game::render()
 
 
     int x, y;
-    for (x = 0; x < 100; ++x)
+    for (x = 0; x < MAP_WIDTH; ++x)
     {
-        for (y = 0; y < 100; ++y)
+        for (y = 0; y < MAP_HEIGHT; ++y)
         {
             switch(layer1.at(x).at(y))
             {

@@ -26,6 +26,10 @@
 #define SHOT_WIDTH 5
 #define SHOT_HEIGHT 5
 
+#define MAP_WIDTH 100
+#define MAP_HEIGHT 100
+
+
 #define IDLE 0
 #define LEFT 1
 #define RIGHT 2

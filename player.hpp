@@ -103,6 +103,14 @@ class Player : public Entity
 
 SDL_Texture* Player::operator[](int idx)
 {
+    // If the index out of range.
+    if (idx >= textures.size() || idx < 0)
+    {
+        std::cout << "setTexture(): Invalid Index\n";
+        SDL_Quit();
+        exit(1);
+    }
+
     return textures.at(idx);
 }
 

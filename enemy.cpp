@@ -96,7 +96,7 @@ void Enemy::movement()
 
 
 
-    if (heuristic.second >= 20 && getFunctionality())
+    if (heuristic.second >= 1 && getFunctionality())
     {
 
         switch (hash(heuristic.first.c_str()))

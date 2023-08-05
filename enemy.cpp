@@ -27,13 +27,13 @@ bool Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)
         setDoAttack_0();
         if (getFacingLeft())
         {
-            plyr->set_dx(-1.3 * getDamage());
-            plyr->set_dy(-1.2 * getDamage());
+            plyr->set_dx(-1.03 * getDamage());
+            plyr->set_dy(-1.02 * getDamage());
         }
         else
         {
-            plyr->set_dx(1.3 * getDamage());
-            plyr->set_dy(-1.2 * getDamage());                
+            plyr->set_dx(1.03 * getDamage());
+            plyr->set_dy(-1.02 * getDamage());                
         }  
         return true;   
     }
@@ -95,8 +95,8 @@ void Enemy::movement()
     std::pair<std::string, double> heuristic = *std::min_element(states.begin(), states.end(), comp());
 
 
-
-    if (heuristic.second >= 1 && getFunctionality())
+    std::cout << (20 - (getDamage() / 10)) << std::endl;
+    if (heuristic.second >= (20 - (getDamage() / 10)) && getFunctionality())
     {
 
         switch (hash(heuristic.first.c_str()))

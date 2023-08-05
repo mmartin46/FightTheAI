@@ -2,6 +2,7 @@
 
 # FightTheAI
 A SDL2 Fighting Platformer Project Written in C++. The goal is to obliterate the AI.
+The background was a free royalty free image online.
 
 ## Screenshots
 <p float="left">

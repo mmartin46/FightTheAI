@@ -4,6 +4,7 @@
 #include "collision.cpp"
 #include "loader.cpp"
 #include "events.cpp"
+#include "textures.cpp"
 
 Game::Game()
 {

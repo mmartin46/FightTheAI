@@ -63,7 +63,7 @@ void Game::render()
 template <typename T>
 void Game::makeSmokeRect(SDL_Rect rect, T *plyr) 
 {
-    rect = { static_cast<int>(getScrollX() + plyr->get_x()), static_cast<int>(getScrollY() + plyr->get_y()), plyr->get_h(), plyr->get_w() };
+    rect = { SCROLL((*getPlayer()), getScrollX(), get_x()), SCROLL((*getPlayer()), getScrollY(), get_y()), plyr->get_h(), plyr->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getSmoke()->getTexture(getSmoke()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(plyr->getFacingLeft() == true));
 }
 

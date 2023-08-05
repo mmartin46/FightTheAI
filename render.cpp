@@ -1,9 +1,15 @@
 #include "game.hpp"
 
-#define GETFRAME(object) object[object.getFrame()]
 
-#define SETSCROLLABLE(object, scroll, z) \
-static_cast<int>(scroll + object->z) 
+#ifndef GETFRAME
+    // Gets the frame of an object
+    #define GETFRAME(object) object[object.getFrame()]
+#endif
+
+#ifndef SCROLLABLE
+    #define SCROLLABLE(object, scroll, z) \
+    static_cast<int>(scroll + object->z) 
+#endif
 
 void Game::render()
 {
@@ -32,15 +38,15 @@ void Game::render()
     }
 
     // Shot
-    rect = { static_cast<int>(getScrollX() + getShot()->get_x()), static_cast<int>(getScrollY() + getShot()->get_y()), getShot()->get_h(), getShot()->get_w() };
+    rect = { SCROLLABLE(getShot(), getScrollX(), get_x()), SCROLLABLE(getShot(), getScrollY(), get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
 
     // Player
-    rect = { SETSCROLLABLE(getPlayer(), getScrollX(), get_x()), SETSCROLLABLE(getPlayer(), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
+    rect = { SCROLLABLE(getPlayer(), getScrollX(), get_x()), SCROLLABLE(getPlayer(), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), GETFRAME(player), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
 
     // Enemy
-    rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
+    rect = { SCROLLABLE(getEnemy(), getScrollX(), get_x()), SCROLLABLE(getEnemy(), getScrollY(), get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), GETFRAME(enemy), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
     renderGameStatsBar(rect);

@@ -45,14 +45,14 @@ typedef struct {
    int p2_y;
 } Distance;
 
-struct comp
+typedef struct
 {
    template <typename T>
    bool operator() (const T&lhs, const T&rhs)
    {
       return lhs.second < rhs.second;
    }
-};
+} comp;
 
 
 

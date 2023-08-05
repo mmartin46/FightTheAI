@@ -38,10 +38,12 @@
 #endif
 
 #ifndef SCROLL
+    // Scrolls the background
     #define SCROLL(object, scroll, z) \
     static_cast<int>(scroll + object.z) 
 #endif
 
 #ifndef ISFACINGLEFT
-    #define ISFACINGLEFT(object) ((SDL_RendererFlip) object->getFacingLeft() == true)
+    // Checks if the object is facing left.
+    #define ISFACINGLEFT(object) (SDL_RendererFlip) (object->getFacingLeft() == true)
 #endif

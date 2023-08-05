@@ -47,3 +47,8 @@
     // Checks if the object is facing left.
     #define ISFACINGLEFT(object) (SDL_RendererFlip) (object->getFacingLeft() == true)
 #endif
+
+#ifndef BLOCKS
+    // Quick way to access the matrix of blocks
+    #define BLOCKS(x, y) blocks.at(x).at(y) 
+#endif

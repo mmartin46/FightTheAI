@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 
+
 void Game::initGameStatsBar()
 {
    char str[200] = "";
@@ -33,10 +34,10 @@ void Game::loadWorld()
             switch(layer1.at(x).at(y))
             {
                 case world::BLOCK: {
-                    blocks.at(x).at(y).set_y((x*BLOCK_WIDTH));
-                    blocks.at(x).at(y).set_x((y*BLOCK_HEIGHT));
-                    blocks.at(x).at(y).set_w(BLOCK_WIDTH);
-                    blocks.at(x).at(y).set_h(BLOCK_HEIGHT);
+                    BLOCKS(x, y).set_y((x*BLOCK_WIDTH));
+                    BLOCKS(x, y).set_x((y*BLOCK_HEIGHT));
+                    BLOCKS(x, y).set_w(BLOCK_WIDTH);
+                    BLOCKS(x, y).set_h(BLOCK_HEIGHT);
                 }
                 break;
             }

@@ -11,7 +11,7 @@ int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int pl
     int touched = 0;
     float pw = player_width, ph = player_height;
     float px = plyr.get_x(), py = plyr.get_y();
-    float bx = blocks.at(row).at(col).get_x(), by = blocks.at(row).at(col).get_y(), bw = blocks.at(row).at(col).get_w(), bh = blocks.at(row).at(col).get_h();
+    float bx = BLOCKS(row, col).get_x(), by = BLOCKS(row, col).get_y(), bw = BLOCKS(row, col).get_w(), bh = BLOCKS(row, col).get_h();
 
     if (px+pw/2 > bx && px+pw/2 < bx+bw)
     {

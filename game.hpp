@@ -153,7 +153,10 @@ class Game
         inline void setShotTexture(SDL_Texture *t) { shotTexture = t; }
         inline SDL_Texture* getShotTexture() { return shotTexture; }
 
-
+        void setConstantTextures(vector<void (Game::*)(SDL_Texture*)> &constantTextures, 
+            vector<pair<std::string, std::string> > &messageMap,
+            SDL_Surface *surface,
+            std::string filePath);
         // Time
         inline int getTime() { return time; }
         inline void setTime(int t) { time = t; }

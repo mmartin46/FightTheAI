@@ -22,7 +22,7 @@ void Game::render()
             switch(layer1.at(x).at(y))
             {
                 case world::BLOCK : {
-                    rect = { SCROLL(blocks.at(x).at(y), getScrollX(), get_x()), SCROLL(blocks.at(x).at(y), getScrollY(), get_y()), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
+                    rect = { SCROLL(BLOCKS(x, y), getScrollX(), get_x()), SCROLL(BLOCKS(x, y), getScrollY(), get_y()), BLOCKS(x, y).get_w(), BLOCKS(x, y).get_h() };
                     SDL_RenderCopy(this->getRenderer(), getBlockTexture(), NULL , &rect);
                 } break;
             }

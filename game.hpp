@@ -51,7 +51,7 @@ class Game
         Player *attackedPlayer;
         
     public:
-        Game();
+        explicit Game();
         void loadTextures();
         void loadWorld();
         void render();
@@ -158,6 +158,5 @@ class Game
         inline int getTime() { return time; }
         inline void setTime(int t) { time = t; }
 
-        
 };
 

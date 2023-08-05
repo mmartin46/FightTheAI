@@ -1,6 +1,9 @@
 #include "game.hpp"
 
+#define GETFRAME(object) object[object.getFrame()]
 
+#define SETSCROLLABLE(object, scroll, z) \
+static_cast<int>(scroll + object->z) 
 
 void Game::render()
 {
@@ -33,12 +36,12 @@ void Game::render()
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
 
     // Player
-    rect = { static_cast<int>(getScrollX() + getPlayer()->get_x()), static_cast<int>(getScrollY() + getPlayer()->get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
-    SDL_RenderCopyEx(this->getRenderer(), player[player.getFrame()], NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
+    rect = { SETSCROLLABLE(getPlayer(), getScrollX(), get_x()), SETSCROLLABLE(getPlayer(), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
+    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(player), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
 
     // Enemy
     rect = { static_cast<int>(getScrollX() + getEnemy()->get_x()), static_cast<int>(getScrollY() + getEnemy()->get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
-    SDL_RenderCopyEx(this->getRenderer(), enemy[enemy.getFrame()], NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
+    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(enemy), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
     renderGameStatsBar(rect);
     makeSmokeRect(rect, attackedPlayer);

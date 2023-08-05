@@ -41,3 +41,6 @@
     #define SCROLL(object, scroll, z) \
     static_cast<int>(scroll + object.z) 
 #endif
+
+#define ISFACINGLEFT(object)\
+ (SDL_RendererFlip) object->getFacingLeft() == true

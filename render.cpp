@@ -35,11 +35,11 @@ void Game::render()
 
     // Player
     rect = { SCROLL((*getPlayer()), getScrollX(), get_x()), SCROLL((*getPlayer()), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
-    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(player), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
+    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(player), NULL, &rect, 0, NULL, (SDL_RendererFlip) ISFACINGLEFT(getPlayer()));
 
     // Enemy
     rect = { SCROLL((*getEnemy()), getScrollX(), get_x()), SCROLL((*getEnemy()), getScrollY(), get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
-    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(enemy), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
+    SDL_RenderCopyEx(this->getRenderer(), GETFRAME(enemy), NULL, &rect, 0, NULL, (SDL_RendererFlip) ISFACINGLEFT(getEnemy()));
 
     renderGameStatsBar(rect);
     makeSmokeRect(rect, attackedPlayer);

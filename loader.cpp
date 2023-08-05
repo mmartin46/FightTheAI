@@ -105,11 +105,10 @@ void Game::loadTextures()
         exit(1);
     }
 
-    // Player files
+    // Movables
     playerTextureLoading(idx, 19, surface, getPlayer());
-
-    // Enemy
     playerTextureLoading(idx, 19, surface, getEnemy());
+
 
     // Background
     filePath = "sprites\\background\\bg.jpg";
@@ -140,7 +139,10 @@ void Game::loadTextures()
         SDL_FreeSurface(surface);
    }
 
-
+    vector<void (Game::*)(SDL_Texture *)> constantTextures = {
+        setBlockTexture,
+        setShotTexture
+    };
 
 
     // Blocks

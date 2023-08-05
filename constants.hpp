@@ -37,7 +37,7 @@
     #define GETFRAME(object) object[object.getFrame()]
 #endif
 
-#ifndef SCROLLABLE
-    #define SCROLLABLE(object, scroll, z) \
-    static_cast<int>(scroll + object->z) 
+#ifndef SCROLL
+    #define SCROLL(object, scroll, z) \
+    static_cast<int>(scroll + object.z) 
 #endif

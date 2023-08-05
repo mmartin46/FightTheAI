@@ -10,7 +10,7 @@ void Game::render()
     SDL_Rect rect;
 
     // Background
-    rect = { static_cast<int>((this->getScrollX() / 200) + getBackground()->get_x()), static_cast<int>((this->getScrollY() / 20) + getBackground()->get_y()), getBackground()->get_w(), getBackground()->get_h() };
+    rect = { SCROLL((*getBackground()), (this->getScrollX() / 200), get_x()), SCROLL((*getBackground()), (this->getScrollY() / 20), get_y()), getBackground()->get_w(), getBackground()->get_h() };
     SDL_RenderCopy(this->getRenderer(), getBackground()->getTexture(0), NULL, &rect);
 
 
@@ -22,7 +22,7 @@ void Game::render()
             switch(layer1.at(x).at(y))
             {
                 case world::BLOCK : {
-                    rect = { static_cast<int>(getScrollX() + blocks.at(x).at(y).get_x()), static_cast<int>(getScrollY() + blocks.at(x).at(y).get_y()), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
+                    rect = { SCROLL(blocks.at(x).at(y), getScrollX(), get_x()), SCROLL(blocks.at(x).at(y), getScrollY(), get_y()), blocks.at(x).at(y).get_w(), blocks.at(x).at(y).get_h() };
                     SDL_RenderCopy(this->getRenderer(), getBlockTexture(), NULL , &rect);
                 } break;
             }
@@ -30,15 +30,15 @@ void Game::render()
     }
 
     // Shot
-    rect = { SCROLLABLE(getShot(), getScrollX(), get_x()), SCROLLABLE(getShot(), getScrollY(), get_y()), getShot()->get_h(), getShot()->get_w() };
+    rect = { SCROLL((*getShot()), getScrollX(), get_x()), SCROLL((*getShot()), getScrollY(), get_y()), getShot()->get_h(), getShot()->get_w() };
     SDL_RenderCopy(this->getRenderer(), getShotTexture(), NULL, &rect);
 
     // Player
-    rect = { SCROLLABLE(getPlayer(), getScrollX(), get_x()), SCROLLABLE(getPlayer(), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
+    rect = { SCROLL((*getPlayer()), getScrollX(), get_x()), SCROLL((*getPlayer()), getScrollY(), get_y()), getPlayer()->get_h(), getPlayer()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), GETFRAME(player), NULL, &rect, 0, NULL, (SDL_RendererFlip)(getPlayer()->getFacingLeft() == true));
 
     // Enemy
-    rect = { SCROLLABLE(getEnemy(), getScrollX(), get_x()), SCROLLABLE(getEnemy(), getScrollY(), get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
+    rect = { SCROLL((*getEnemy()), getScrollX(), get_x()), SCROLL((*getEnemy()), getScrollY(), get_y()), getEnemy()->get_h(), getEnemy()->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), GETFRAME(enemy), NULL, &rect, 0, NULL, (SDL_RendererFlip) (getEnemy()->getFacingLeft() == true));
 
     renderGameStatsBar(rect);

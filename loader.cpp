@@ -110,43 +110,60 @@ void Game::loadTextures()
     playerTextureLoading(idx, 19, surface, getEnemy());
 
 
-    // Background
-    filePath = "sprites\\background\\bg.jpg";
-    surface = IMG_Load(filePath.c_str());
-    if (surface == NULL)
+    // // Background
+    // filePath = "sprites\\background\\bg.jpg";
+    // surface = IMG_Load(filePath.c_str());
+    // if (surface == NULL)
+    // {
+    //     std::cout << "loadTextures background(): No texture for " + filePath << std::endl;
+    //     SDL_Quit();
+    //     exit(1);        
+    // }
+    // getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+    // SDL_FreeSurface(surface);
+
+
+    vector<entitysize_pair_<Entity*, int> > objects = {
+        {(getSmoke()), 4},
+        {(getBackground()), 1}
+    };
+
+    vector<pair<string, string> > messageMap = {
+        {"sprites\\attacked\\smoke", "setObjectTextures smoke(): No texture for "},
+        {"sprites\\background\\bg.jpg", "setObjectTextures background(): No texture for "}
+    };
+
+    vector<entitysize_pair_<Entity*, int> >::pointer oPtr, oEnd = objects.data() + objects.size();
+    typename vector<pair<string, string> >::pointer mPtr, mEnd = messageMap.data() + messageMap.size();
+
+    for (oPtr = objects.data(), mPtr = messageMap.data(); oPtr < oEnd; ++oPtr, ++mPtr)
     {
-        std::cout << "loadTextures background(): No texture for " + filePath << std::endl;
-        SDL_Quit();
-        exit(1);        
+        setObjectTextures(oPtr->first, oPtr->second, filePath, surface, *mPtr);
     }
-    getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-    SDL_FreeSurface(surface);
 
 
-
-
-    for (idx = 0; idx < 4; ++idx)
-    {
-        filePath = "sprites\\attacked\\smoke" + std::to_string(idx) + ".png";
-        surface = IMG_Load(filePath.c_str());
-        if (surface == NULL)
-        {
-            std::cout << "loadTextures smoke(): No texture for " + filePath << std::endl;
-            SDL_Quit();
-            exit(1);
-        }
-        getSmoke()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-        SDL_FreeSurface(surface);
-   }
+//     for (idx = 0; idx < 4; ++idx)
+//     {
+//         filePath = "sprites\\attacked\\smoke" + std::to_string(idx) + ".png";
+//         surface = IMG_Load(filePath.c_str());
+//         if (surface == NULL)
+//         {
+//             std::cout << "loadTextures smoke(): No texture for " + filePath << std::endl;
+//             SDL_Quit();
+//             exit(1);
+//         }
+//         getSmoke()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+//         SDL_FreeSurface(surface);
+//    }
 
     vector<void (Game::*)(SDL_Texture *)> constantTextures = {
         setBlockTexture,
         setShotTexture
     };
 
-    vector<pair<std::string, std::string>> messageMap = {
-        {"sprites\\platforms\\block.png", "loadTextures block(): No texture for "},
-        {"sprites\\shot\\shot.png", "loadTextures shot(): No texture for "}
+    messageMap = {
+        {"sprites\\platforms\\block.png", "constantTextures block(): No texture for "},
+        {"sprites\\shot\\shot.png", "constantTextures shot(): No texture for "}
     };
 
 
@@ -163,9 +180,11 @@ void Game::loadTextures()
 void Game::setConstantTextures(vector<void (Game::*)(SDL_Texture*)> &constantTextures, 
                             vector<pair<std::string, std::string> > &messageMap,
                             SDL_Surface *surface,
-                            std::string filePath)
+                            std::string &filePath)
 {
-    typename vector<pair<std::string, std::string> >::pointer mPtr, mEnd = messageMap.data() + messageMap.size();
+    using std::string;
+
+    typename vector<pair<string, string> >::pointer mPtr, mEnd = messageMap.data() + messageMap.size();
     typename vector<void (Game::*)(SDL_Texture *)>::pointer setTPtr, setTEnd = constantTextures.data() + constantTextures.size();
 
     for (mPtr = messageMap.data(), setTPtr = constantTextures.data(); mPtr < mEnd; ++mPtr, ++setTPtr)
@@ -183,3 +202,52 @@ void Game::setConstantTextures(vector<void (Game::*)(SDL_Texture*)> &constantTex
         SDL_FreeSurface(surface);
     }
 }
+
+/*
+\param obj shared pointer to an object 
+\param size # of textures
+\param filePath to change by reference
+\param surface pointer to a surface
+\param image path and the error message
+*/
+void Game::setObjectTextures(Entity *obj, int size, 
+                            std::string &filePath, SDL_Surface *surface,
+                            pair<string, string> &messagePair)
+{
+    using std::to_string;
+
+    string fileType = ".png";
+
+    if (fileType.find(".jpg") != std::string::npos)
+    {
+        fileType = ".jpg";
+    }
+
+    if (std::any_of(messagePair.first.begin(), messagePair.first.end(), ::isdigit))
+    {
+        messagePair.first = messagePair.first.substr(0, messagePair.first.find(".", 0));
+    }
+
+    int idx = 0;
+    for (; idx < size; ++idx)
+    {
+        if (size == 1)
+        {
+            filePath = messagePair.first;
+        }
+        else
+        {
+            filePath = messagePair.first + to_string(idx) + fileType;
+        }
+        surface = IMG_Load(filePath.c_str());
+        if (surface == NULL)
+        {
+            std::cout << messagePair.second + filePath << std::endl;
+            SDL_Quit();
+            exit(1);
+        }
+        obj->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        SDL_FreeSurface(surface);
+   }
+}
+

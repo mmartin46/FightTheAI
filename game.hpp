@@ -156,7 +156,13 @@ class Game
         void setConstantTextures(vector<void (Game::*)(SDL_Texture*)> &constantTextures, 
             vector<pair<std::string, std::string> > &messageMap,
             SDL_Surface *surface,
-            std::string filePath);
+            std::string &filePath);
+
+        void setObjectTextures(Entity *obj, int size, 
+                                    std::string &filePath, SDL_Surface *surface,
+                                    pair<string, string> &messageMap);
+
+
         // Time
         inline int getTime() { return time; }
         inline void setTime(int t) { time = t; }

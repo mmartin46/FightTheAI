@@ -12,6 +12,7 @@ class Entity
         float dx, dy;
         int frame;
         std::vector<SDL_Texture*> textures;
+        
     public:
         Entity();
         Entity(float x, float y, unsigned int size);

@@ -55,6 +55,13 @@ typedef struct
 } comp;
 
 
+template <typename T, typename U>
+struct entitysize_pair_ {
+   T first;
+   U second;
+};
+
+
 
 // Utilies bit operations to save of space.
 namespace bitset

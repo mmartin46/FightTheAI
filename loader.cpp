@@ -110,19 +110,7 @@ void Game::loadTextures()
     playerTextureLoading(idx, 19, surface, getEnemy());
 
 
-    // // Background
-    // filePath = "sprites\\background\\bg.jpg";
-    // surface = IMG_Load(filePath.c_str());
-    // if (surface == NULL)
-    // {
-    //     std::cout << "loadTextures background(): No texture for " + filePath << std::endl;
-    //     SDL_Quit();
-    //     exit(1);        
-    // }
-    // getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-    // SDL_FreeSurface(surface);
-
-
+    // Object Texture Setters
     vector<entitysize_pair_<Entity*, int> > objects = {
         {(getSmoke()), 4},
         {(getBackground()), 1}
@@ -133,29 +121,15 @@ void Game::loadTextures()
         {"sprites\\background\\bg.jpg", "setObjectTextures background(): No texture for "}
     };
 
+    // Iterate through the objects and set their textures.
     vector<entitysize_pair_<Entity*, int> >::pointer oPtr, oEnd = objects.data() + objects.size();
     typename vector<pair<string, string> >::pointer mPtr, mEnd = messageMap.data() + messageMap.size();
-
     for (oPtr = objects.data(), mPtr = messageMap.data(); oPtr < oEnd; ++oPtr, ++mPtr)
     {
         setObjectTextures(oPtr->first, oPtr->second, filePath, surface, *mPtr);
     }
 
-
-//     for (idx = 0; idx < 4; ++idx)
-//     {
-//         filePath = "sprites\\attacked\\smoke" + std::to_string(idx) + ".png";
-//         surface = IMG_Load(filePath.c_str());
-//         if (surface == NULL)
-//         {
-//             std::cout << "loadTextures smoke(): No texture for " + filePath << std::endl;
-//             SDL_Quit();
-//             exit(1);
-//         }
-//         getSmoke()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-//         SDL_FreeSurface(surface);
-//    }
-
+    // Game Texture Setters
     vector<void (Game::*)(SDL_Texture *)> constantTextures = {
         setBlockTexture,
         setShotTexture
@@ -165,8 +139,6 @@ void Game::loadTextures()
         {"sprites\\platforms\\block.png", "constantTextures block(): No texture for "},
         {"sprites\\shot\\shot.png", "constantTextures shot(): No texture for "}
     };
-
-
     setConstantTextures(constantTextures, messageMap, surface, filePath);
 }
 
@@ -216,13 +188,20 @@ void Game::setObjectTextures(Entity *obj, int size,
 {
     using std::to_string;
 
+    /*
+    By default the type of file for the image
+    is a .png. If the type is of .jpg, change the
+    file type.
+    */
     string fileType = ".png";
-
     if (fileType.find(".jpg") != std::string::npos)
     {
         fileType = ".jpg";
     }
 
+    /*
+    If there is a number within the string, cut off the file type.
+    */
     if (std::any_of(messagePair.first.begin(), messagePair.first.end(), ::isdigit))
     {
         messagePair.first = messagePair.first.substr(0, messagePair.first.find(".", 0));
@@ -231,6 +210,9 @@ void Game::setObjectTextures(Entity *obj, int size,
     int idx = 0;
     for (; idx < size; ++idx)
     {
+        /*
+        If there is only one texture, just keep the string as is.
+        */
         if (size == 1)
         {
             filePath = messagePair.first;

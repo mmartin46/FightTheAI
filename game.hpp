@@ -96,6 +96,8 @@ class Game
         inline void setScrollY(int s) { scroll.second = s; }
         inline int getScrollY() { return scroll.second; }
 
+        void playerTextureLoading(int idx, int size, SDL_Surface *surface, Entity *entity);
+
         // Blocks
 
         inline Matrix<Entity>* getBlocks() { return &blocks; }

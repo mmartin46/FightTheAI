@@ -44,6 +44,48 @@ void Game::loadWorld()
     }
 }
 
+void Game::playerTextureLoading(int idx, int size, SDL_Surface *surface, Entity *entity)
+{
+    string filePath;
+    string filePathStart;
+
+    // Checking the type of the object
+    if (typeid(*entity) == typeid(Player))
+    {
+        filePathStart = "sprites\\player\\player";
+    }
+    else if (typeid(*entity) == typeid(Enemy))
+    {
+        filePathStart = "sprites\\enemy\\player";
+    }
+    else
+    {
+        std::cout << "loader playerTextureLoading(): object type not found";
+        SDL_Quit();
+        exit(1);
+    }
+
+
+    for (idx = 0; idx < size; ++idx)
+    {
+        filePath = filePathStart + std::to_string(idx) + ".png";
+        surface = IMG_Load(filePath.c_str());
+        if (surface == NULL)
+        {
+            std::cout << "loadTextures player(): No texture for " + filePath << std::endl;
+            SDL_Quit();
+            exit(1);
+        }
+        if (idx == 0)
+        {
+            entity->set_w(getImageDimensions(filePath.c_str()).first);
+            entity->set_h(getImageDimensions(filePath.c_str()).second);
+        }
+        entity->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        SDL_FreeSurface(surface);
+    }
+}
+
 
 void Game::loadTextures()
 {
@@ -64,44 +106,10 @@ void Game::loadTextures()
     }
 
     // Player files
-    for (idx = 0; idx < 19; ++idx)
-    {
-        filePath = "sprites\\player\\player" + std::to_string(idx) + ".png";
-        surface = IMG_Load(filePath.c_str());
-        if (surface == NULL)
-        {
-            std::cout << "loadTextures player(): No texture for " + filePath << std::endl;
-            SDL_Quit();
-            exit(1);
-        }
-        if (idx == 0)
-        {
-            getPlayer()->set_w(getImageDimensions(filePath.c_str()).first);
-            getPlayer()->set_h(getImageDimensions(filePath.c_str()).second);
-        }
-        getPlayer()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-        SDL_FreeSurface(surface);
-    }
+    playerTextureLoading(idx, 19, surface, getPlayer());
 
     // Enemy
-    for (idx = 0; idx < 19; ++idx)
-    {
-        filePath = "sprites\\enemy\\player" + std::to_string(idx) + ".png";
-        surface = IMG_Load(filePath.c_str());
-        if (surface == NULL)
-        {
-            std::cout << "loadTextures enemy(): No texture for " + filePath << std::endl;
-            SDL_Quit();
-            exit(1);
-        }
-        if (idx == 0)
-        {
-            getEnemy()->set_w(getImageDimensions(filePath.c_str()).first);
-            getEnemy()->set_h(getImageDimensions(filePath.c_str()).second);
-        }
-        getEnemy()->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
-        SDL_FreeSurface(surface);
-    }
+    playerTextureLoading(idx, 19, surface, getEnemy());
 
     // Background
     filePath = "sprites\\background\\bg.jpg";
@@ -114,6 +122,8 @@ void Game::loadTextures()
     }
     getBackground()->setTexture(0, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
     SDL_FreeSurface(surface);
+
+
 
 
     for (idx = 1; idx <= 5; ++idx)
@@ -129,6 +139,9 @@ void Game::loadTextures()
         getSmoke()->setTexture((idx-1), SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
    }
+
+
+
 
     // Blocks
     filePath = "sprites\\platforms\\block.png";

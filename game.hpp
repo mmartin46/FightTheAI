@@ -1,11 +1,13 @@
 #pragma once
 #include "shot.hpp"
+
 #include "enemy.hpp"
+
 #include "player.hpp"
+
+
 #include "map.cpp"
 
-#define BLOCK_WIDTH 20
-#define BLOCK_HEIGHT 20
 
 
 class Game

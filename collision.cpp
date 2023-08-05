@@ -1,5 +1,10 @@
 #include "game.hpp"
 
+
+/* 
+Detects a collision between a player and a specific block,
+and how the player is to be placed after the collision
+*/
 template <typename T>
 int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int player_width, int player_height)
 {
@@ -65,6 +70,10 @@ int Game::mapCollision(T &plyr, Matrix<Entity> &blocks, int row, int col, int pl
     return touched;
 }
 
+/*
+Manages all the collisions within
+the map.
+*/
 void Game::collisionManager()
 {
     int row, col = 0;
@@ -88,7 +97,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
     if (state[SDL_SCANCODE_Q])
     {
         getPlayer()->setDoAttack_0();
-        if (collision::collide2d(playerEnemyCollision))
+        if (collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
             allowSmokeAnimation();
@@ -112,7 +121,7 @@ void Game::enemyPlayerCollision(const Uint8* state)
     if (state[SDL_SCANCODE_DOWN])
     {
         getPlayer()->setMovingDown();
-        if (collision::collide2d(playerEnemyCollision))
+        if (collide2d(playerEnemyCollision))
         {
             attackedPlayer = getEnemy();
             allowSmokeAnimation();

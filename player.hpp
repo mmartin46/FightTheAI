@@ -2,14 +2,6 @@
 #include "entity.hpp"
 
 
-
-#define IDLE 0
-#define LEFT 1
-#define RIGHT 2
-#define DOWN 4
-#define UP 8
-
-
 class Player : public Entity
 {
     private:

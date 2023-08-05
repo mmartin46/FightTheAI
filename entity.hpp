@@ -43,7 +43,7 @@ Entity::Entity()
 {
     this->set_x(0);
     this->set_y(0);
-    textures = std::vector<SDL_Texture*>(10);
+    textures = std::vector<SDL_Texture*>(30);
     this->setFrame(0);    
 }
 
@@ -68,6 +68,5 @@ void Entity::setTexture(int idx, SDL_Texture *texture)
     // Set the texture
     textures.at(idx) = texture;
 }
-
 
 

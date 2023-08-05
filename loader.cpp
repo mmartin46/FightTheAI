@@ -44,7 +44,7 @@ void Game::loadWorld()
     }
 }
 
-void Game::playerTextureLoading(int idx, int size, SDL_Surface *surface, Entity *entity)
+void Game::playerTextureLoading(int idx, int size, SDL_Surface *surface, Player *entity)
 {
     string filePath;
     string filePathStart;
@@ -81,7 +81,7 @@ void Game::playerTextureLoading(int idx, int size, SDL_Surface *surface, Entity 
             entity->set_w(getImageDimensions(filePath.c_str()).first);
             entity->set_h(getImageDimensions(filePath.c_str()).second);
         }
-        entity->setTexture(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
+        entity->operator()(idx, SDL_CreateTextureFromSurface(this->getRenderer(), surface));
         SDL_FreeSurface(surface);
     }
 }

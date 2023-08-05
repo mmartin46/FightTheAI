@@ -99,20 +99,35 @@ class Player : public Entity
         inline virtual void setSlowingDown(bool s) { slowingDown = s; }
 
         SDL_Texture* operator[](int idx);
+        void operator()(int idx, SDL_Texture *);
 };  
 
+// Returns a texture
 SDL_Texture* Player::operator[](int idx)
 {
     // If the index out of range.
     if (idx >= textures.size() || idx < 0)
     {
-        std::cout << "setTexture(): Invalid Index\n";
+        std::cout << "operator[]: Invalid Index\n";
         SDL_Quit();
         exit(1);
     }
 
     return textures.at(idx);
 }
+
+void Player::operator() (int idx, SDL_Texture *texture)
+{
+    // If the index out of range.
+    if (idx >= textures.size() || idx < 0)
+    {
+        std::cout << "operator(): Invalid Index\n";
+        SDL_Quit();
+        exit(1);
+    }
+    textures.at(idx) = texture; 
+}
+
 
 
 void Player::animation(int time)

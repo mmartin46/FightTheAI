@@ -4,6 +4,7 @@
 #include "enemy.hpp"
 
 #include "player.hpp"
+#include "player.cpp"
 
 
 #include "map.cpp"

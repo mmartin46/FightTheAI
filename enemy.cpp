@@ -8,14 +8,13 @@ Enemy::Enemy()
     setFacingLeft(false);
 }
 
-template <typename T>
-void Enemy::setupTarget(T &plyr)
+
+void Enemy::setupTarget(Player &plyr)
 {
     target.p1_x = plyr.get_x();
     target.p1_y = plyr.get_y();
     target.p2_x = get_x();
     target.p2_y = get_y();
-
 }
 
 bool Enemy::usePunchAttack(const CollisionStruct &collision, Player *plyr)

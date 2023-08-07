@@ -1,3 +1,5 @@
+#ifndef PLAYER_H
+#define PLAYER_H
 #pragma once
 #include "entity.hpp"
 
@@ -101,3 +103,4 @@ class Player : public Entity
         SDL_Texture* operator[](int idx);
         void operator()(int idx, SDL_Texture *);
 };  
+#endif

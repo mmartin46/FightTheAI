@@ -1,66 +1,4 @@
-#include <SDL2\SDL.h>
-#include <SDL2\SDL_image.h>
-#include <SDL2\SDL_mixer.h>
-#include <SDL2\SDL_ttf.h>
-#include <iostream>
-#include <memory>
-#include <thread>
-#include <chrono>
-#include <math.h>
-#include <vector>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <stdlib.h>
-#include <utility>
-#include <cstdlib>
-#include <unordered_map>
-#include <algorithm>
-#include <future>
-#include <dirent.h>
-#include <chrono>
-#include <thread>
-#include <sys/types.h>
-#include "constants.hpp"
-using std::unordered_map;
-using namespace std::chrono;
-
-
-
-template <typename T>
-using Matrix = std::vector<std::vector<T> >;
-using std::pair;
-using std::shared_ptr;
-using std::vector;
-using std::string;
-using std::unordered_map;
-
-
-// Finds the distance between
-// two points.
-typedef struct {
-   int p1_x;
-   int p1_y;
-   int p2_x;
-   int p2_y;
-} Distance;
-
-typedef struct
-{
-   template <typename T>
-   bool operator() (const T&lhs, const T&rhs)
-   {
-      return lhs.second < rhs.second;
-   }
-} comp;
-
-
-template <typename T, typename U>
-struct entitysize_pair_ {
-   T first;
-   U second;
-};
-
+#include "utilities.hpp"
 
 
 // Utilies bit operations to save of space.
@@ -88,16 +26,6 @@ bool inclusive_range(int start, int end, int time)
 }
 
 
-typedef struct {
-   float x1;
-   float x2;
-   float y1;
-   float y2; 
-   float wt1;
-   float wt2;
-   float ht1;
-   float ht2;
-} CollisionStruct;
 
 int collide2d(float x1, float x2, float y1, float y2, float ht1, float wt1, float wt2, float ht2)
 {

@@ -1,3 +1,5 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 #pragma once
 
 #define BLOCK_WIDTH 20
@@ -56,4 +58,6 @@
 #ifndef BLOCKS
     // Quick way to access the matrix of blocks
     #define BLOCKS(x, y) blocks.at(x).at(y) 
+#endif
+
 #endif

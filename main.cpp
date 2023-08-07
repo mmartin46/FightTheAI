@@ -1,6 +1,5 @@
 // John 3:16
 #include "game.hpp"
-#include "game.cpp"
 
 /*
 Objective 

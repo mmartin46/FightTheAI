@@ -1,3 +1,5 @@
+#ifndef ENEMY_H
+#define ENEMY_H
 #pragma once
 #include "player.hpp"
 
@@ -31,8 +33,8 @@ class Enemy : public Player
         std::vector<SDL_Texture*> textures;
     public:
         Enemy();
-        template <typename T>
-        void setupTarget(T &plyr);
+
+        void setupTarget(Player &plyr);
         void movement();
 
         inline void setFunctionalityOn() { functionality = 1; }
@@ -44,3 +46,4 @@ class Enemy : public Player
 };
 
 
+#endif

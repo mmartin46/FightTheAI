@@ -164,6 +164,9 @@ void Game::animate()
     getEnemy()->set_x(getEnemy()->get_x() + getEnemy()->get_dx());
     getEnemy()->set_y(getEnemy()->get_y() + getEnemy()->get_dy());
 
+
+    playSmokeAnimation();
+
     //Shot Positioning
     if (getShot()->getDidShoot() == status::DIDNTSHOOT)
     {
@@ -200,15 +203,46 @@ void Game::animate()
 }
 
 template <typename T>
-void Game::makeSmokeRect(SDL_Rect rect, T *plyr) 
+void Game::makeSmokeRect(T *plyr) 
 {
-    rect = { static_cast<int>(getScrollX() + plyr->get_x()), static_cast<int>(getScrollY() + plyr->get_y()), plyr->get_h(), plyr->get_w() };
+    SDL_Rect rect = { static_cast<int>(getScrollX() + plyr->get_x()), static_cast<int>(getScrollY() + plyr->get_y()), plyr->get_h(), plyr->get_w() };
     SDL_RenderCopyEx(this->getRenderer(), getSmoke()->getTexture(getSmoke()->getFrame()), NULL, &rect, 0, NULL, (SDL_RendererFlip)(plyr->getFacingLeft() == true));
+}
+
+void Game::playSmokeAnimation()
+{
+    if (smokeAnimationAllow == true)
+    {
+        if ((time % 10) < 10)
+        {
+            if ((time % 10) < 3.5)
+            {
+                getSmoke()->setFrame(1);
+            }
+            else if ((time % 10) >= 3.5 && (time % 20) < 5)
+            {
+                getSmoke()->setFrame(2);
+            }
+            else if ((time % 10) >= 5 && (time % 20) < 7.5)
+            {
+                getSmoke()->setFrame(3);
+            }
+            else if ((time % 10) >= 7.5 && (time % 10) < 10)
+            {
+                getSmoke()->setFrame(4);
+                smokeAnimationAllow = false;
+            }
+            else
+            {
+                smokeAnimationAllow = false;
+            }
+        }
+    }
 }
 
 void Game::render()
 {
-    SDL_SetRenderDrawColor(this->getRenderer(), 120, 120, 120, 255);
+    SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 255);
     SDL_RenderClear(this->getRenderer());
     SDL_Rect rect;
 
@@ -485,6 +519,8 @@ void Game::enemyPlayerCollision(const Uint8* state)
         {
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();
+
+
             if (getPlayer()->getFacingLeft())
             {
                 getEnemy()->set_dx(-3 * getEnemy()->getDamage());
@@ -503,8 +539,11 @@ void Game::enemyPlayerCollision(const Uint8* state)
         getPlayer()->setMovingDown();
         if (collide2d(playerEnemyCollision))
         {
+            smokeAnimationAllow = true;
             getEnemy()->incDamage();
             getEnemy()->setFunctionalityOff();
+
+
             if (getPlayer()->getFacingLeft())
             {
                 getEnemy()->set_dx(-2 * getEnemy()->getDamage());

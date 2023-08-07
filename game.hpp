@@ -1,8 +1,7 @@
 #pragma once
-#include "shot.hpp"
 #include "enemy.hpp"
-#include "player.hpp"
-#include "map.cpp"
+#include "shot.hpp"
+#include "map.hpp"
 
 #define BLOCK_WIDTH 20
 #define BLOCK_HEIGHT 20
@@ -15,6 +14,9 @@ class Game
         SDL_Renderer *renderer;
         Player player;
         Enemy enemy;
+
+        Player *attackedPlayer;
+
         Entity background;
 
         Entity gameStatsBar;
@@ -45,6 +47,8 @@ class Game
         // Scrolling
         pair<float, float> scroll;
         
+        bool smokeAnimationAllow = true;
+
     public:
         Game();
         void loadTextures();
@@ -60,7 +64,9 @@ class Game
         void renderGameStatsBar(SDL_Rect &rect);
 
         template <typename T>
-        void makeSmokeRect(SDL_Rect rect, T *plyr);
+        void makeSmokeRect(T *plyr);
+
+        void playSmokeAnimation();
 
         // Font
         inline void setFont(TTF_Font *font) { this->font = font; }

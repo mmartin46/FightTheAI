@@ -1,6 +1,5 @@
 // John 3:16
 #include "game.hpp"
-#include "game.cpp"
 
 
 /*
@@ -11,7 +10,7 @@ to the one at Children's Lighthouse
 
 */
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
     Game game;
     SDL_Window *window = NULL;
